@@ -4,15 +4,31 @@
 
 <template>
   <div class="home">
-    <div class="left-section fontes-esquerda">
+    <section class="left-section fontes-esquerda">
       <h1>Bem vindo ao Pointer!</h1>
       <h3>O sistema que aponta ao seu futuro</h3>
       <button>Saiba mais</button>
-    </div>
-    <div class="right-section"></div>
+    </section>
+    <section class="right-section">
+      <img src="../../public/favicon.ico" />
+      <form>
+        <div class="textoLogin">
+          <h2>Olá!</h2>
+          <p>Seja bem vindo!</p>
+        </div>
+        <input class="inputLogin" type="email" value="Email" />
+        <input class="inputLogin" type="password" value="Senha" />
+        <button class="buttonLogin" type="submit">Login</button>
+        <div class="opcoes">
+          <button>Esqueceu a Senha?</button>
+          <p>ou</p>
+          <button>Criar conta</button>
+        </div>
+      </form>
+    </section>
   </div>
 </template>
-<style>
+<style scoped>
 * {
   padding: 0%;
   margin: 0%;
@@ -21,7 +37,7 @@
 
 .home {
   height: 100vh;
-  width: 100vh;
+  display: flex;
 }
 
 .left-section {
@@ -68,8 +84,109 @@
   min-width: 180px;
   min-height: 60px;
   font-size: 19px;
-  transition-property: min-widht, min-height , font-size;
+  transition-property: min-widht, min-height, font-size;
   transition-duration: 0.5s;
   border: solid 2px white;
+}
+
+.right-section {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--fonte1);
+}
+
+.right-section form {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  align-items: center;
+  margin-top: 7%;
+}
+
+.inputLogin {
+  border: solid 2px rgba(155, 155, 155, 0.438);
+  color: rgb(155, 155, 155);
+  height: 55px;
+  border-radius: 20px;
+  padding-left: 15px;
+  margin-bottom: 15px;
+  width: 95%;
+}
+
+.textoLogin {
+  display: flex;
+  flex-direction: column;
+  color: black;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.textoLogin h2 {
+  font-weight: bolder;
+}
+
+.textoLogin p {
+  font-weight: 500;
+}
+
+.buttonLogin {
+  width: 95%;
+  height: 55px;
+  border-radius: 20px;
+  border-style: none;
+  color: white;
+  background-color: var(--roxo);
+  font-size: 17px;
+  font-weight: bolder;
+}
+
+.buttonLogin:hover {
+  border: solid 2px black;
+}
+
+.opcoes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10%;
+}
+.opcoes button {
+  border: none;
+  background-color: none;
+  color: rgb(87, 87, 87);
+  background-color: white;
+}
+
+.opcoes button:hover {
+  color: var(--roxo);
+  text-decoration: underline;
+}
+
+.opcoes p {
+  padding: 15px;
+  color: rgb(141, 141, 141);
+}
+
+.right-section img {
+  height: 100px;
+}
+
+@media (min-width: 0px) and (max-width: 768px) {
+  .home {
+    flex-direction: column;
+  }
+  .left-section h1 {
+    font-size: 2rem;
+  }
+
+  .left-section h3 {
+    font-size: 1.2rem;
+  }
 }
 </style>
