@@ -1,17 +1,4 @@
-<script>
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { library } from "@fortawesome/fontawesome-svg-core";
-
-library.add(faMagnifyingGlass);
-
-export default {
-  components: {
-    FontAwesomeIcon,
-  },
-  name: "Dashboard",
-};
-</script>
+<script setup></script>
 
 <template>
   <div class="home">
@@ -25,15 +12,27 @@ export default {
           </div>
         </div>
         <div class="navLinks">
-          <div>
-            <li><RouterLink to="/dashboard">Início</RouterLink></li>
-          </div>
-          <div>
-            <li><RouterLink to="/MinhasVagas">Minhas Vagas</RouterLink></li>
-          </div>
-          <div>
-            <li><RouterLink to="/perfil">Perfil</RouterLink></li>
-          </div>
+          <button>
+            <RouterLink to="/dashboard" class="no-underline">
+              <font-awesome-icon class="iconsNavLink" icon="house" />
+              <li>Início</li>
+            </RouterLink>
+          </button>
+          <button>
+            <RouterLink to="/MinhasVagas" class="no-underline">
+              <font-awesome-icon
+                class="iconsNavLink"
+                icon="fa-solid fa-clipboard"
+              />
+              <li>Minhas Vagas</li>
+            </RouterLink>
+          </button>
+          <button>
+            <RouterLink to="/perfil" class="no-underline">
+              <font-awesome-icon class="iconsNavLink" icon="fa-solid fa-user" />
+              <li>Perfil</li>
+            </RouterLink>
+          </button>
         </div>
       </navbar>
     </header>
@@ -46,6 +45,11 @@ export default {
   padding: 0%;
   margin: 0%;
   box-sizing: border-box;
+}
+
+.no-underline {
+  text-decoration: none;
+  color: inherit;
 }
 
 navbar img {
@@ -71,6 +75,7 @@ navbar img {
 .search_bar input {
   border: none;
   outline: none;
+  font-family: var(--fonte1);
 }
 
 .searchBar {
@@ -86,8 +91,9 @@ navbar img {
 navbar {
   display: flex;
   justify-content: space-between;
-  margin: 15px 5% 15px 5%;
+  margin: 15px 10% 15px 10%;
   align-items: center;
+  max-height: 50px;
 }
 
 .navLinks {
@@ -100,9 +106,36 @@ navbar {
   width: 40%;
 }
 
-.navLinks li a {
+.navLinks button:hover {
+  font-size: 20px;
+  transition: 0.2s;
+  color: var(--roxo);
+}
+
+.navLinks button:hover .iconsNavLink {
+  color: var(--roxo);
+}
+
+.navLinks button {
   text-decoration: none;
-  color: black;
+  color: gray;
+  font-weight: 450;
+}
+
+.navLinks button {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.iconsNavLink {
+  font-size: 1.5rem;
+  color: gray;
+}
+
+.navLinks button {
+  border: none;
+  background-color: white;
 }
 
 main {
