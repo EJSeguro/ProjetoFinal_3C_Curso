@@ -4,7 +4,6 @@ import HeaderPointer from "@/components/HeaderPointer.vue";
 
 <template>
   <HeaderPointer />
-
   <main></main>
 </template>
 
