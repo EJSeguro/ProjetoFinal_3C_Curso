@@ -21,6 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'about',
+        'resume',
+        'recruiter',
     ];
 
     /**
@@ -44,5 +47,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function candidatures(){
+        return $this->hasMany(Candidature::class);
+    }
+
+    public function createdVaccations(){
+        return $this->hasMany(Vaccation::class);
     }
 }
