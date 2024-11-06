@@ -1,6 +1,6 @@
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faSearch, faPhone, faMagnifyingGlass, faClipboard, faHouse, faUser} from "@fortawesome/free-solid-svg-icons";
-import {   } from "@fortawesome/free-regular-svg-icons";
+import { faSearch, faPhone, faMagnifyingGlass, faClipboard, faHouse, faUser, faCloudArrowUp,  } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 library.add(
     faSearch,   
@@ -9,6 +9,8 @@ library.add(
     faMagnifyingGlass,
     faHouse,
     faClipboard,
+    faCloudArrowUp,
+    faPenToSquare
 );
 
 import "./assets/main.css";
