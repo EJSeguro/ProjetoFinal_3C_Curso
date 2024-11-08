@@ -11,6 +11,7 @@ function triggerUpload(type) {
     fileInputBackground.value.click();
   }
 }
+
 function uploadImage(type, event) {
   // Carrega a imagem no componente
   const file = event.target.files[0];
@@ -26,6 +27,10 @@ function uploadImage(type, event) {
 const fileInputBackground = ref(null);
 
 const fileInputProfile = ref(null);
+
+const showModal = ref(false);
+
+const fullName = ref();
 </script>
 
 <template>
@@ -64,10 +69,33 @@ const fileInputProfile = ref(null);
             <option value="recruiter">Recrutador</option>
           </select>
         </div>
-        <div class="addInfoButton">
-          <button>Adicionar Informações +</button>
-        </div>
       </section>
+      <div class="aboutProfile">
+        <div class="aboutText">
+          <h1>Sobre</h1>
+          <button @click="showModal = true" id="buttonOpenModal">
+            <font-awesome-icon icon="fa-solid fa-plus" />
+          </button>
+          <div v-if="showModal" class="modal">
+            <div class="modal-content">
+              <h3>Adicionar Informações</h3>
+              <textarea
+                v-model="fullName"
+                id="mensagem"
+                rows="4"
+                cols="50"
+                placeholder="Digite sua mensagem aqui..."
+              ></textarea>
+              <button @click="showModal = false" id="buttonCloseModal">
+                Salvar
+              </button>
+              <div class="exibicaoTexto">
+                {{ textoDigitado }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <input
@@ -100,16 +128,17 @@ const fileInputProfile = ref(null);
 
 .profile {
   background-color: white;
-  margin: 3% 10%;
+  margin: 2% 2% 0 2%;
   border-radius: 10px;
   width: 100%;
   display: flex;
   flex-direction: column;
+  height: max-content;
 }
 
 .backgroundImage {
   width: 100%;
-  height: 200px;
+  height: 250px;
   display: flex;
   background-size: cover;
   background-color: var(--roxo);
@@ -180,7 +209,6 @@ const fileInputProfile = ref(null);
   display: flex;
   justify-content: space-between;
   position: relative;
-  top: -11%;
   margin: 0% 8% 0% 8%;
   align-items: center;
 }
@@ -211,15 +239,79 @@ const fileInputProfile = ref(null);
   cursor: pointer;
 }
 
-.addInfoButton {
+.aboutProfile {
+  flex-direction: column;
   position: relative;
-  display: flex;
+  font-family: var(--fonte1);
+  border-radius: 8px;
+  border: 2px solid rgb(134, 156, 255);
+  width: 85%;
+  margin: 2rem 6rem;
+  padding: 20px;
 }
 
-.addInfoButton button {
-  border-radius: 20px;
-  width: 16vw;
-  height: 5vh;
+.aboutProfile h1 {
+  font-size: 30px;
+  font-weight: 550;
+}
+
+.aboutProfile button {
+  padding: 5px;
+  margin-left: 80%;
+  height: 35px;
+  border-radius: 20%;
   border-color: rgb(134, 156, 255);
+}
+
+.aboutProfile h3 {
+  overflow-wrap: break-word;
+  font-size: 15px;
+  padding-top: 30px;
+}
+
+.aboutText {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 800px;
+  height: auto;
+  text-align: center;
+}
+
+.modal-content h3 {
+  font-family: var(--fonte1);
+  font-size: 20px;
+  padding: 1rem;
+}
+
+.modal-content input {
+  font-family: var(--fonte1);
+  height: auto;
+  flex-wrap: wrap;
+}
+
+.modal-content button {
+  border-radius: 5%;
+  margin-top: 1rem;
+  width: 6rem;
+  margin-left: 87%;
+  background-color: rgb(134, 156, 255);
 }
 </style>

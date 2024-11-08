@@ -1,16 +1,17 @@
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faSearch, faPhone, faMagnifyingGlass, faClipboard, faHouse, faUser, faCloudArrowUp,  } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faPhone, faMagnifyingGlass, faClipboard, faHouse, faUser, faCloudArrowUp, faPlus} from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+faSearch,   
 library.add(
-    faSearch,   
     faUser, 
     faPhone, 
     faMagnifyingGlass,
     faHouse,
     faClipboard,
     faCloudArrowUp,
-    faPenToSquare
+    faPenToSquare,
+    faPlus
 );
 
 import "./assets/main.css";
