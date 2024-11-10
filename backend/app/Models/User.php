@@ -12,6 +12,9 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    const RECRUITER_ROLE = "recruiter";
+    const CANDIDATE_ROLE = "candidate";
+
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +24,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'about',
+        'curriculum',
     ];
 
     /**
@@ -44,5 +50,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function vaccacions(){
+        return $this->hasMany(Vaccacion::class);
+    }
+
+    public function applications(){
+        return $this->hasMany(Application::class);
     }
 }
