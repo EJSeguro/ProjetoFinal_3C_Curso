@@ -24,13 +24,35 @@ function uploadImage(type, event) {
     }
   }
 }
+
+function updateModal() {
+  showModal.value = !showModal.value;
+  texts.value.push(modalText.value);
+  modalText.value = "";
+}
+
+function saveAndClose() {
+  showModal2.value = false;
+  texts.value.push(modalText.value);
+  modalText.value = "";
+}
+
+function saveButtonModal3() {
+  showModal3.value = false;
+  texts.value.push(modalText.value);
+  modalText.value = "";
+}
+
 const fileInputBackground = ref(null);
 
 const fileInputProfile = ref(null);
 
 const showModal = ref(false);
+const showModal2 = ref(false);
+const showModal3 = ref(false);
 
-const fullName = ref();
+const modalText = ref("");
+const texts = ref([]);
 </script>
 
 <template>
@@ -77,20 +99,88 @@ const fullName = ref();
             <font-awesome-icon icon="fa-solid fa-plus" />
           </button>
           <div v-if="showModal" class="modal">
-            <div class="modal-content">
+            <div class="modalContent">
               <h3>Adicionar Informações</h3>
               <textarea
-                v-model="fullName"
+                v-model="modalText"
                 id="mensagem"
                 rows="4"
                 cols="50"
                 placeholder="Digite sua mensagem aqui..."
               ></textarea>
-              <button @click="showModal = false" id="buttonCloseModal">
-                Salvar
-              </button>
-              <div class="exibicaoTexto">
-                {{ textoDigitado }}
+              <button @click="updateModal" id="buttonCloseModal">Salvar</button>
+            </div>
+          </div>
+        </div>
+        <!-- <div v-for="text in texts" class="exibicaoTexto"> -->
+        <!-- <div> -->
+        <!-- {{ text }} -->
+        <!-- </div> -->
+        <!-- </div> -->
+      </div>
+      <div class="experiencieProfile">
+        <div class="experiencieProfileContent">
+          <h1>Experiências</h1>
+          <button @click="showModal2 = true" id="buttonOpenModal2">
+            <font-awesome-icon icon="fa-solid fa-plus" />
+          </button>
+          <div v-if="showModal2" class="modal">
+            <div class="modalContent">
+              <h3>Adicionar Informações sobre suas Experiências</h3>
+              <div class="divModal">
+                <p>Título</p>
+                <input
+                  class="inputsExperiencie"
+                  type="text"
+                  placeholder="Nome da empresa"
+                />
+                <p>Descrição</p>
+                <textarea
+                  v-model="modalText"
+                  id="mensagem"
+                  rows="4"
+                  cols="50"
+                  placeholder="Descreva a sua experiência..."
+                ></textarea>
+                <p>Data de Ingresso</p>
+                <input class="inputsExperiencie" type="date" />
+                <p>Data em que saiu</p>
+                <input class="inputsExperiencie" type="date" />
+                <button @click="saveAndClose">Salvar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="academicTraining">
+        <div class="academicTrainingContent">
+          <h1 class="noBreak">Formação acadêmica</h1>
+          <button @click="showModal3 = true" id="buttonOpenModal3">
+            <font-awesome-icon icon="fa-solid fa-plus" />
+          </button>
+          <div v-if="showModal3" class="modal">
+            <div class="modalContent">
+              <h3>Adicionar Informações sobre suas Experiências</h3>
+              <div class="divModal3">
+                <p>Nome da Instituição</p>
+                <input
+                  class="inputsExperiencie"
+                  type="text"
+                  placeholder="Digite o nome da instituição"
+                />
+                <p>Descrição</p>
+                <textarea
+                  v-model="modalText"
+                  id="mensagem"
+                  rows="4"
+                  cols="50"
+                  placeholder="Descreva a sua experiência..."
+                ></textarea>
+                <p>Data de Ingresso</p>
+                <input class="inputsExperiencie" type="date" />
+                <p>Data de fim</p>
+                <input class="inputsExperiencie" type="date" />
+                <button @click="saveButtonModal3">Salvar</button>
               </div>
             </div>
           </div>
@@ -98,6 +188,7 @@ const fullName = ref();
       </div>
     </div>
   </div>
+
   <input
     type="file"
     ref="fileInputProfile"
@@ -120,7 +211,7 @@ const fullName = ref();
 }
 
 .mainProfile {
-  height: 100vh;
+  height: 100%;
   background-color: rgb(184, 184, 184);
   display: flex;
   justify-content: center;
@@ -128,7 +219,7 @@ const fullName = ref();
 
 .profile {
   background-color: white;
-  margin: 2% 2% 0 2%;
+  margin: 2%;
   border-radius: 10px;
   width: 100%;
   display: flex;
@@ -263,12 +354,6 @@ const fullName = ref();
   border-color: rgb(134, 156, 255);
 }
 
-.aboutProfile h3 {
-  overflow-wrap: break-word;
-  font-size: 15px;
-  padding-top: 30px;
-}
-
 .aboutText {
   display: flex;
   align-items: center;
@@ -286,32 +371,119 @@ const fullName = ref();
   align-items: center;
   justify-content: center;
 }
-.modal-content {
+
+.modalContent {
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
-  width: 800px;
+  width: 600px;
   height: auto;
   text-align: center;
 }
 
-.modal-content h3 {
+.modalContent h3 {
   font-family: var(--fonte1);
   font-size: 20px;
   padding: 1rem;
 }
 
-.modal-content input {
-  font-family: var(--fonte1);
-  height: auto;
-  flex-wrap: wrap;
-}
-
-.modal-content button {
+.modalContent button {
   border-radius: 5%;
   margin-top: 1rem;
   width: 6rem;
-  margin-left: 87%;
+  margin-left: 75%;
+  background-color: rgb(134, 156, 255);
+}
+
+.experiencieProfile {
+  flex-direction: column;
+  position: relative;
+  font-family: var(--fonte1);
+  border-radius: 8px;
+  border: 2px solid rgb(134, 156, 255);
+  width: 85%;
+  margin: 2rem 6rem;
+  padding: 20px;
+  height: 80px;
+}
+
+.experiencieProfile h1 {
+  font-size: 30px;
+  font-weight: 550;
+}
+
+.experiencieProfile button {
+  padding: 5px;
+  margin-left: 80%;
+  height: 35px;
+  border-radius: 20%;
+  border-color: rgb(134, 156, 255);
+}
+
+.experiencieProfileContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.divModal {
+  display: flex;
+  flex-direction: column;
+}
+
+.divModal button {
+  border-radius: 5%;
+  margin-top: 1rem;
+  width: 6rem;
+  margin-left: 83%;
+  background-color: rgb(134, 156, 255);
+}
+
+.academicTraining {
+  flex-direction: column;
+  position: relative;
+  font-family: var(--fonte1);
+  border-radius: 8px;
+  border: 2px solid rgb(134, 156, 255);
+  width: 85%;
+  margin: 2rem 6rem;
+  padding: 20px;
+  height: 80px;
+}
+
+.academicTraining h1 {
+  font-size: 30px;
+  font-weight: 550;
+}
+
+.academicTraining button {
+  padding: 5px;
+  margin-left: 60%;
+  height: 35px;
+  border-radius: 20%;
+  border-color: rgb(134, 156, 255);
+}
+
+.academicTrainingContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.noBreak {
+  white-space: nowrap;
+}
+
+.divModal3 {
+  display: flex;
+  flex-direction: column;
+}
+
+.divModal3 button {
+  border-radius: 5%;
+  margin-top: 1rem;
+  width: 6rem;
+  margin-left: 83%;
   background-color: rgb(134, 156, 255);
 }
 </style>
