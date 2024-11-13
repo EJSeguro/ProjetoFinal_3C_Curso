@@ -3,7 +3,7 @@
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\VaccacionController;
+use App\Http\Controllers\VacancyController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -18,11 +18,11 @@ Route::middleware(['auth:sanctum', 'role:candidate'])->group(function(){
 });
 
 Route::middleware(['auth:sanctum', 'role:recruiter'])->group(function(){
-    Route::post('/vaccacion',[VaccacionController::class,'storeVaccacion']);
-    Route::delete('/vaccacion/{id}',[VaccacionController::class,'removeVaccacion']);
-    Route::put('/vaccacion/{id}', [VaccacionController::class,'updateVaccacion']);
-    Route::get('/vaccacion',[VaccacionController::class, 'indexVaccacion']);
-    Route::get('/vaccacion/{id}',[VaccacionController::class, 'showVaccacion']);
+    Route::post('/vaccacion',[VacancyController::class,'storeVaccacion']);
+    Route::delete('/vaccacion/{id}',[VacancyController::class,'removeVaccacion']);
+    Route::put('/vaccacion/{id}', [VacancyController::class,'updateVaccacion']);
+    Route::get('/vaccacion',[VacancyController::class, 'indexVaccacion']);
+    Route::get('/vaccacion/{id}',[VacancyController::class, 'showVaccacion']);
 });
 
 Route::middleware(['auth:sanctum'])->group(function(){

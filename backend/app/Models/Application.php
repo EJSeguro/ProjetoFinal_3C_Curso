@@ -8,14 +8,14 @@ class Application extends Model
 {
     protected $fillable = [
         'user_id',
-        'vaccacion_id',
+        'vacancy_id',
     ];
 
     public function user(){
         return $this->belongsTo(User::class);
     }
 
-    public function vaccation(){
-        return $this->belongsTo(Vaccacion::class);
+    public function vacancy(){
+        return $this->belongsTo(Vacancy::class);
     }
 }

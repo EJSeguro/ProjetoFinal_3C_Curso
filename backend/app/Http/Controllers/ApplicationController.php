@@ -3,63 +3,59 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ApplicationController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function indexApplicationsVacancy($vacancyId)
     {
-        //
+        $applications = Application::whereHas('vacancy', function ($query) {
+            $query->where('user_id', Auth::user()->id);
+        })->where('vacancy_id', $vacancyId)->all();
+
+        return response()->json($applications);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function indexApplicationsAll()
     {
-        //
+        $applications = Application::whereHas('vacancy', function ($query) {
+            $query->where('user_id', Auth::user()->id);
+        })->all();
+
+        return response()->json($applications);
     }
 
+    public function indexApplicationsCandidate()
+    {
+        $applications = Application::where('user_id', Auth::user()->id)->all();
+
+        return response()->json($applications);
+    }
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        $validate = $request->validate([
+            'vacancy_id' => 'required|exists:vacancies,id'
+        ]);
+
+        $validate['user_id'] = Auth::user()->id;
+
+        $application = Application::create($validate);
+
+        return response()->json($application, 200);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Application $application)
+    public function destroy(int $id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Application $application)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Application $application)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Application $application)
-    {
-        //
+        $application = Application::where('user_id', Auth::user()->id)->firstOrFail($id);
+        $application->delete();
+        return response()->json($application, 200);
     }
 }
