@@ -84,7 +84,7 @@ navbar {
   justify-content: space-between;
   margin: 15px 10% 15px 10%;
   align-items: center;
-  max-height: 50px;
+  height: 50px;
 }
 
 .navLinks {
