@@ -17,10 +17,6 @@ import VacancieCard from "@/components/VacancieCard.vue";
       <VacancieCard />
       <VacancieCard />
       <VacancieCard />
-      <VacancieCard />
-      <VacancieCard />
-      <VacancieCard />
-      <VacancieCard />
     </div>
   </main>
 </template>
@@ -31,7 +27,18 @@ import VacancieCard from "@/components/VacancieCard.vue";
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
+}
+
+.nameContainer {
+  margin-left: 38%;
+  border-radius: 10px;
+  border: 2px solid var(--roxo);
+  width: 380px;
+  padding: 1%;
+  margin-top: 10px;
+  background-color: white;
+  white-space: nowrap;
 }
 
 .vacanciesContainer {
