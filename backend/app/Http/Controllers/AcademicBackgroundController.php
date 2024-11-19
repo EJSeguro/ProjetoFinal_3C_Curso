@@ -58,7 +58,7 @@ class AcademicBackgroundController extends Controller
     {
         $user = Auth::user()->id;
         if($user != $academicBackground->user_id){
-            return response()->json(['message' => 'You are not authorized to delete this academic background'], 401);
+            return response()->json(['error' => 'You are not authorized to delete this academic background'], 401);
         }
         $academicBackground->delete();
         return response()->json(['message' => 'Academic background deleted successfully'], 200);

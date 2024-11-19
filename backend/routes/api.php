@@ -45,12 +45,14 @@ Route::middleware(['auth:sanctum', 'role:recruiter'])->group(function () {
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::delete('/profile/{id}', [UserController::class, 'deleteProfile']);
+    Route::delete('/profile', [UserController::class, 'deleteProfile']);
     Route::put('/profile/{id}', [UserController::class, 'updateProfile']);
     Route::get('/profile', [UserController::class, 'indexProfile']);
     Route::get('/profile/{id}', [UserController::class, 'showProfile']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::put('/changeRole', [UserController::class, 'changeRole']);
 
     Route::get('/vaccacion', [VacancyController::class, 'index']);
     Route::get('/vaccacion/{id}', [VacancyController::class, 'show']);
