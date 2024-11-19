@@ -1,7 +1,11 @@
 <script setup>
 import { ref } from "vue";
 
-const showDescription = ref(false);
+const showModal = ref(false);
+
+function closeModal() {
+  showModal.value = false;
+}
 </script>
 
 <template>
@@ -12,17 +16,13 @@ const showDescription = ref(false);
       <p>Categoria:</p>
       <p>Área de atuação:</p>
       <p>Localidade:</p>
-      <button @click="showDescription = true">Saiba mais</button>
-      <div
-        v-if="showDescription"
-        class="modal"
-        @click.self="showDescription = false"
-      >
+      <button @click="showModal = true">Saiba mais</button>
+      <div v-if="showModal" class="modal">
         <div class="modalContent">
-          <h3>Descrição da Vaga</h3>
-          <p>Aqui você pode colocar a descrição completa da vaga...</p>
-          <button @click="showDescription = false">Fechar</button>
-          <button @click="apply = true">Candidatar-se</button>
+          <h3>Detalhes da Vaga</h3>
+          <p></p>
+          <button @click="closeModal">Fechar</button>
+          <button @click="">Candidatar-se</button>
         </div>
       </div>
     </div>
@@ -68,9 +68,7 @@ const showDescription = ref(false);
 }
 
 .modal {
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: fixed;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
@@ -80,15 +78,15 @@ const showDescription = ref(false);
 }
 
 .modalContent {
-  background: white;
+  background-color: #fff;
   padding: 20px;
-  border-radius: 5px;
-  width: 100%;
-  height: 100%;
+  border-radius: 8px;
+  width: 600px;
+  height: auto;
 }
 
 .modalContent h3 {
-  margin-left: 15%;
+  margin-left: 30%;
 }
 
 .modalContent p {
@@ -97,8 +95,7 @@ const showDescription = ref(false);
 
 .modalContent button {
   margin-top: 75px;
-  margin-left: 10px;
+  margin-left: 90px;
   width: 150px;
-  
 }
 </style>
