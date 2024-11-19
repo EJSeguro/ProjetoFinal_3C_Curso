@@ -56,7 +56,7 @@ navbar img {
 
 .searchBar {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; 
   padding: 0 20px;
   align-items: center;
   border: solid 2px black;
@@ -84,7 +84,7 @@ navbar {
   justify-content: space-between;
   margin: 15px 10% 15px 10%;
   align-items: center;
-  max-height: 50px;
+  height: 50px;
 }
 
 .navLinks {
