@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
-
 const showModal = ref(false);
+// import { addToMyVacancies } from "../stores/vacanciesState"; // Ajuste o caminho para o arquivo correto
 
 function closeModal() {
   showModal.value = false;
@@ -22,7 +22,7 @@ function closeModal() {
           <h3>Detalhes da Vaga</h3>
           <p></p>
           <button @click="closeModal">Fechar</button>
-          <button @click="">Candidatar-se</button>
+          <button @click="addToMyVacancies">Candidatar-se</button>
         </div>
       </div>
     </div>

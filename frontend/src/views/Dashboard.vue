@@ -31,7 +31,7 @@ import VacancieCard from "@/components/VacancieCard.vue";
 }
 
 .nameContainer {
-  margin-left: 35%;
+  margin-left: 37%;
   border-radius: 10px;
   border: 2px solid var(--roxo);
   width: 380px;
