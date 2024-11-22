@@ -1,11 +1,47 @@
 <script setup>
 import ChangeFormComponent from "@/components/ChangeFormComponent.vue";
+import { register, login } from "@/services/HttpService";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const registerUser = ref({
+  name:'',
+  email:'',
+  password:'',
+  password_confirmation:'',
+});
+
+const loginUser = ref({
+  email:'',
+  password:'',
+});
 
 const isActive = ref(false);
 
 function changeForm(value) {
   isActive.value = value;
+}
+
+async function userLogin() {
+  const response = await login(loginUser.value);
+  if (response.status === 200) {
+    alert("Usuário logado com sucesso!");
+    router.push("/Dashboard");
+  } else {
+    alert("Erro ao logar usuário!");
+  }
+}
+
+async function registrateUser() {
+  const response = await register(registerUser.value);
+  if (response.status === 201) {
+    alert("Usuário cadastrado com sucesso!");
+    router.push("/Dashboard");
+  } else {
+    alert("Erro ao cadastrar usuário!");
+  }
 }
 </script>
 
@@ -18,31 +54,31 @@ function changeForm(value) {
     </section>
     <section class="right-section">
       <img src="../../public/favicon.ico" />
-      <form v-if="isActive" @submit.prevent>
+      <form v-if="isActive" @submit.prevent="userLogin">
         <div class="textoLogin">
           <h2>Olá de novo!</h2>
           <p>Seja bem vindo!</p>
         </div>
         <ChangeFormComponent :changeForm="changeForm" :value="isActive" />
-        <input class="inputLogin" type="email" placeholder="Email" />
-        <input class="inputLogin" type="password" placeholder="Senha" />
+        <input class="inputLogin" type="email" placeholder="Email" v-model="loginUser.email" />
+        <input class="inputLogin" type="password" placeholder="Senha" v-model="loginUser.password" />
         <button class="buttonLogin" type="submit">Login</button>
         <div class="opcoes">
           <button>Esqueceu a Senha?</button>
         </div>
       </form>
 
-      <form v-else @submit.prevent>
+      <form v-else @submit.prevent="registrateUser">
         <div class="textoLogin">
           <h2>Olá, como você está?</h2>
           <p>Seja bem vindo!</p>
         </div>
         <ChangeFormComponent :changeForm="changeForm" :value="isActive" />
 
-        <input class="inputLogin" type="text" placeholder="Nome de Usuário" />
-        <input class="inputLogin" type="email" placeholder="Email" />
-        <input class="inputLogin" type="password" placeholder="Senha" />
-        <input class="inputLogin" type="password" placeholder="Confirmar senha" />
+        <input class="inputLogin" type="text" placeholder="Nome Completo" v-model="registerUser.name" />
+        <input class="inputLogin" type="email" placeholder="Email" v-model="registerUser.email" />
+        <input class="inputLogin" type="password" placeholder="Senha" v-model="registerUser.password" />
+        <input class="inputLogin" type="password" placeholder="Confirmar senha" v-model="registerUser.password_confirmation" />
         <button class="buttonLogin" type="submit">Registrar-se</button>
       </form>
     </section>
