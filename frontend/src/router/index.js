@@ -4,6 +4,7 @@ import Dashboard from "@/views/Dashboard.vue";
 import Profile from "@/views/Profile.vue";
 import MyVacancies from "@/views/MyVacancies.vue";
 
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [

@@ -53,6 +53,18 @@ const showModal3 = ref(false);
 
 const modalText = ref("");
 const texts = ref([]);
+
+// Estado reativo para controlar o papel do usuário (Recrutador ou Candidato)
+const role = ref("candidato");
+
+// Função para Criar e Editar Vaga
+function createJob() {
+  alert("Criar Vaga");
+}
+
+function editJob() {
+  alert("Editar Vaga");
+}
 </script>
 
 <template>
@@ -86,10 +98,15 @@ const texts = ref([]);
         <div class="nameProfile">
           <h1>Seu nome</h1>
           <h3>Informações Gerais</h3>
-          <select class="selectedRoule" aria-label="Default select example">
-            <option value="candidato" selected>Candidato</option>
+          <select class="selectedRole" v-model="role">
+            <option value="candidato">Candidato</option>
             <option value="recruiter">Recrutador</option>
           </select>
+          <div v-if="role === 'recruiter'" class="recrutador-options">
+            <h2>Opções de Recrutador</h2>
+            <button @click="createJob">Criar Vaga</button>
+            <button @click="editJob">Editar Vaga</button>
+          </div>
         </div>
       </section>
       <div class="aboutProfile">
@@ -362,8 +379,6 @@ const texts = ref([]);
 
 .modal {
   position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
@@ -485,5 +500,19 @@ const texts = ref([]);
   width: 6rem;
   margin-left: 83%;
   background-color: rgb(134, 156, 255);
+}
+
+.recrutador-options button {
+  padding: 10px;
+  background-color: #008cba;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.recrutador-options button:hover {
+  background-color: #007bb5;
 }
 </style>
