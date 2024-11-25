@@ -3,12 +3,8 @@
 <template>
   <header>
     <navbar>
-      <div class="search">
+      <div>
         <img src="../../public/favicon.ico" />
-        <div class="searchBar">
-          <input class="searching" type="text" placeholder="Pesquise aqui" />
-          <font-awesome-icon icon="magnifying-glass" />
-        </div>
       </div>
       <div class="navLinks">
         <button>
@@ -47,54 +43,22 @@ navbar img {
   height: 50px;
 }
 
-.search {
-  width: 100%;
-  display: flex;
-  gap: 2rem;
-  align-items: center;
-}
-
-.searchBar {
-  display: flex;
-  justify-content: space-between; 
-  padding: 0 20px;
-  align-items: center;
-  border: solid 2px black;
-  border-radius: 50px;
-}
-
-.searchBar input {
-  border: none;
-  outline: none;
-  font-family: var(--fonte1);
-}
-
-.searching {
-  border: solid 2px rgba(155, 155, 155, 0.438);
-  color: rgb(155, 155, 155);
-  height: 40px;
-  border-radius: 20px;
-  padding-left: 15px;
-  width: 40%;
-  min-width: 200px;
-}
-
 navbar {
   display: flex;
   justify-content: space-between;
-  margin: 15px 10% 15px 10%;
+  margin: 15px 6% 15px 6%;
   align-items: center;
   height: 50px;
 }
 
 .navLinks {
   display: flex;
-  justify-content: space-around;
+  justify-content: end;
   list-style-type: none;
-  gap: 1rem;
   align-items: center;
   flex-wrap: nowrap;
-  width: 40%;
+  width: 30%;
+  gap: 4vw;
 }
 
 .navLinks button:hover {
