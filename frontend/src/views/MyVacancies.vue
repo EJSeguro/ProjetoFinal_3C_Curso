@@ -1,5 +1,5 @@
 <script setup>
-import VacancieCard from '@/components/VacancieCard.vue';
+import VacancieCard from '@/components/RecruiterVacancieCard.vue';
 import VacancyModal from '@/components/VacancyModal.vue';
 import { useAuthStore } from '@/stores/authStore';
 import { onMounted, ref, watch } from 'vue';

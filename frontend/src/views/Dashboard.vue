@@ -1,5 +1,5 @@
 <script setup>
-import VacancieCard from "@/components/VacancieCard.vue";
+import VacancieCard from "@/components/RecruiterVacancieCard.vue";
 
 </script>
 

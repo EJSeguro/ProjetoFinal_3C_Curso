@@ -24,13 +24,13 @@ const modal = ref(false);
       <p>{{ props.location }}</p>
       <p>{{ props.description }}</p>
       
-      <button @click="modal = true">Saiba mais</button>
+      <button @click="modal = true">Visualizar</button>
 
       <div v-if="modal" class="modal">
         <div class="modalContent">
           <h3>{{props.title}}</h3>
           <button @click="modal = false">Fechar</button>
-          <button>Candidatar-se</button>
+          <button>Remover</button>
         </div>
       </div>
     </div>
@@ -101,9 +101,17 @@ const modal = ref(false);
   width: 90%;
 }
 
-.modalContent button {
-  margin-top: 75px;
-  margin-left: 90px;
-  width: 150px;
+.modalContent button {      
+  border-radius: 15px;
+  border: 1px solid var(--roxo);
+  height: 40px;
+  width: 200px;
+  margin-top: 20px;
+}
+
+.modalContent button:hover {
+  background-color: var(--roxo);
+  font-weight: bold;
+  color: white;
 }
 </style>

@@ -86,7 +86,6 @@ navbar {
 }
 
 .navLinks button:hover {
-  font-size: 20px;
   transition: 0.2s;
   color: var(--roxo);
 }
@@ -136,5 +135,13 @@ button .router-link-active {
 
 button .router-link-active .iconsNavLink {
   color: var(--roxo);
+}
+
+.dropdown-item {
+  cursor: pointer;
+  }
+
+.btn {
+  padding: 0px;
 }
 </style>
