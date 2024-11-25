@@ -12,7 +12,7 @@ class ApplicationController extends Controller
     {
         $applications = Application::whereHas('vacancy', function ($query) {
             $query->where('user_id', Auth::user()->id);
-        })->where('vacancy_id', $vacancyId)->all();
+        })->where('vacancy_id', $vacancyId)->get();
 
         return response()->json($applications);
     }
@@ -21,14 +21,14 @@ class ApplicationController extends Controller
     {
         $applications = Application::whereHas('vacancy', function ($query) {
             $query->where('user_id', Auth::user()->id);
-        })->all();
+        })->get();
 
         return response()->json($applications);
     }
 
     public function getCandidateApplications()
     {
-        $applications = Application::where('user_id', Auth::user()->id)->all();
+        $applications = Application::where('user_id', Auth::user()->id)->get();
 
         return response()->json($applications);
     }

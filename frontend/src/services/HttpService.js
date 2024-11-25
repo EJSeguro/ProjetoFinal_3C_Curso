@@ -35,11 +35,11 @@ export const updateProfile = async (profile) => {
 };
 
 export const deleteProfile = async () => {
-    return await httpService.delete('profile', { headers: authHeader() });
+    return await httpService.delete('profile', {}, { headers: authHeader() });
 };
 
-export const changeRole = async (roleData) => {
-    return await httpService.put('changeRole', roleData, { headers: authHeader() });
+export const changeRole = async () => {
+    return await httpService.put('changeRole', {}, { headers: authHeader() });
 };
 
 export const storeApplication = async (application) => {
@@ -47,7 +47,7 @@ export const storeApplication = async (application) => {
 };
 
 export const deleteApplication = async (id) => {
-    return await httpService.delete(`candidate/application/${id}`, { headers: authHeader() });
+    return await httpService.delete(`candidate/application/${id}`, {}, { headers: authHeader() });
 };
 
 export const getCandidateApplications = async () => {
@@ -63,7 +63,7 @@ export const updateAcademicBackground = async (id, data) => {
 };
 
 export const deleteAcademicBackground = async (id) => {
-    return await httpService.delete(`candidate/academicBackground/${id}`, { headers: authHeader() });
+    return await httpService.delete(`candidate/academicBackground/${id}`, {}, { headers: authHeader() });
 };
 
 export const getAcademicBackground = async (id) => {
@@ -79,7 +79,7 @@ export const updateExperience = async (id, data) => {
 };
 
 export const deleteExperience = async (id) => {
-    return await httpService.delete(`candidate/experience/${id}`, { headers: authHeader() });
+    return await httpService.delete(`candidate/experience/${id}`, {}, { headers: authHeader() });
 };
 
 export const getExperience = async (id) => {
@@ -95,7 +95,7 @@ export const updateVacancy = async (id, data) => {
 };
 
 export const deleteVacancy = async (id) => {
-    return await httpService.delete(`recruiter/vacancy/${id}`, { headers: authHeader() });
+    return await httpService.delete(`recruiter/vacancy/${id}`, {}, { headers: authHeader() });
 };
 
 export const getAllApplications = async () => {
@@ -107,9 +107,13 @@ export const getApplicationsFromVacancy = async (id) => {
 };
 
 export const getVacancies = async () => {
-    return await httpService.get('vacancy', { headers: authHeader() });
+    return await httpService.get('vacancies', { headers: authHeader() });
 };
 
 export const getVacancyById = async (id) => {
     return await httpService.get(`vacancy/${id}`, { headers: authHeader() });
+};
+
+export const getRecruiterVacancies = async () => {
+    return await httpService.get('recruiter/vacancies', { headers: authHeader() });
 };

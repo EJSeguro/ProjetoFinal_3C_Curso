@@ -37,7 +37,8 @@ Route::middleware(['auth:sanctum', 'role:recruiter'])->group(function () {
         Route::post('/vacancy', [VacancyController::class, 'store']);
         Route::delete('/vacancy/{id}', [VacancyController::class, 'destroy']);
         Route::put('/vacancy/{id}', [VacancyController::class, 'update']);
-        
+        Route::get('/vacancies', [VacancyController::class, 'recruiterVacancies']);
+
         Route::get('/applications', [ApplicationController::class, 'getAllApplicationsFromAllVacancies']);
         Route::get('/applications/{id}', [ApplicationController::class, 'getApplicationsFromVacancy']);
     });
@@ -53,6 +54,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::put('/changeRole', [UserController::class, 'changeRole']);
 
-    Route::get('/vacancy', [VacancyController::class, 'index']);
+    Route::get('/vacancies', [VacancyController::class, 'index']);
     Route::get('/vacancy/{id}', [VacancyController::class, 'show']);
 });

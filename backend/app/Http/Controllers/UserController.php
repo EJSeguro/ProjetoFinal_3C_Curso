@@ -27,7 +27,7 @@ class UserController extends Controller
 
         $user=Auth::user();
         $user->update($valdiated);
-        return response()->json(['message' => 'Profile updated successfully', 'data' => $user, 200]);
+        return response()->json(['message' => 'Profile updated successfully', 'data' => $user], 200);
     }
 
     public function changeRole()
@@ -36,7 +36,9 @@ class UserController extends Controller
 
         $user->role = $user->role == User::CANDIDATE_ROLE ? User::RECRUITER_ROLE : User::CANDIDATE_ROLE;
 
-        return response()->json(['message' => 'Role changed successfully', 'data' => $user->role, 200]);
+        $user->save();
+
+        return response()->json(['message' => 'Role changed successfully', 'role' => $user->role], 200);
     }
 
 
@@ -44,6 +46,6 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $user->delete();
-        return response()->json(['message' => 'User deleted successfully', 200]);
+        return response()->json(['message' => 'User deleted successfully'], 200);
     }
 }

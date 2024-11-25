@@ -1,12 +1,10 @@
 <script setup>
-import HeaderPointer from "@/components/HeaderPointer.vue";
 import { useAuthStore } from "@/stores/authStore";
 
 const authStore = useAuthStore();
 </script>
 
 <template>
-  <HeaderPointer />
   <main class="mainContainer">
     <div class="profileContainer">
       <font-awesome-icon id="editIcon" icon="fa-regular fa-pen-to-square" />

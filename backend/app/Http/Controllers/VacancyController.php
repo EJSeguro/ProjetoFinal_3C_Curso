@@ -16,6 +16,12 @@ class VacancyController extends Controller
         return response()->json($vacancies);
     }
 
+    public function recruiterVacancies() {
+        $vacancies = Vacancy::where('user_id', Auth::user()->id)->get();
+
+        return response()->json($vacancies);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
