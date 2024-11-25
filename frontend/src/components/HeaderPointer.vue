@@ -1,4 +1,9 @@
-<script setup></script>
+<script setup>
+import { useAuthStore } from '@/stores/authStore';
+
+const authStore = useAuthStore();
+
+</script>
 
 <template>
   <header>
@@ -13,21 +18,40 @@
             <li>Início</li>
           </RouterLink>
         </button>
-        <button>
-          <RouterLink to="/myVacancies" class="noUnderline">
-            <font-awesome-icon
-              class="iconsNavLink"
-              icon="fa-solid fa-clipboard"
-            />
+
+        <button v-if="!authStore.isRecruiter">
+          <RouterLink :to="{ name: 'vacancies' }" class="noUnderline">
+            <font-awesome-icon class="iconsNavLink" icon="fa-solid fa-clipboard" />
             <li>Minhas Vagas</li>
           </RouterLink>
         </button>
+        <button v-if="authStore.isRecruiter">
+          <RouterLink :to="{ name: 'vacancies' }" class="noUnderline">
+            <font-awesome-icon class="iconsNavLink" icon="fa-solid fa-clipboard" />
+            <li>Gerir Vagas</li>
+          </RouterLink>
+        </button>
+
         <button>
           <RouterLink to="/profile" class="noUnderline">
             <font-awesome-icon class="iconsNavLink" icon="fa-solid fa-user" />
             <li>Perfil</li>
           </RouterLink>
         </button>
+
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <font-awesome-icon class="iconsNavLink" icon="fa-solid fa-circle-chevron-down" />
+            <li>Outros</li>
+          </button>
+
+          <ul class="dropdown-menu">
+            <li v-if="!authStore.isRecruiter"><a class="dropdown-item" @click="authStore.changeUserRole">Trocar para recrutador</a></li>
+            <li v-if="authStore.isRecruiter"><a class="dropdown-item"  @click="authStore.changeUserRole">Trocar para candidato</a></li>
+            <li><a class="dropdown-item" @click="authStore.userLogout">Logout</a></li>
+          </ul>
+        </div>
       </div>
     </navbar>
   </header>
@@ -91,5 +115,26 @@ navbar {
 .navLinks button {
   border: none;
   background-color: white;
+}
+
+.dropdown-toggle::after {
+  display: none;
+}
+
+.router-link-active {
+  color: var(--roxo);
+  font-weight: bold;
+}
+
+.router-link-active .iconsNavLink {
+  color: var(--roxo);
+}
+
+button .router-link-active {
+  color: var(--roxo);
+}
+
+button .router-link-active .iconsNavLink {
+  color: var(--roxo);
 }
 </style>

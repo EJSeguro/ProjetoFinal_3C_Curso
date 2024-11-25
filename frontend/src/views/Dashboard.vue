@@ -1,11 +1,9 @@
 <script setup>
-import HeaderPointer from "@/components/HeaderPointer.vue";
 import VacancieCard from "@/components/VacancieCard.vue";
 
 </script>
 
 <template>
-  <HeaderPointer />
   <main class="mainContainer">
     <h1 class="nameContainer">Vagas Disponíveis</h1>
     <div class="vacanciesContainer">

@@ -1,8 +1,13 @@
 <script setup>
-import { RouterLink, RouterView } from "vue-router";
+import { RouterView } from "vue-router";
+import HeaderPointer from "./components/HeaderPointer.vue";
+import { useAuthStore } from "./stores/authStore";
+
+const authStore = useAuthStore();
 </script>
 
 <template>
+  <HeaderPointer v-if="authStore.isAuthenticated" />
   <RouterView />
 </template>
 

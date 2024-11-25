@@ -1,57 +1,75 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
-import { login, logout } from "@/services/HttpService";
+import { changeRole, login, logout, register } from "@/services/HttpService";
 import { useRouter } from "vue-router";
 
 export const useAuthStore = defineStore(
   "auth",
   () => {
     const router = useRouter();
+
     const token = ref("");
     const user = ref({});
     const isAuthenticated = computed(() => token.value !== "");
+    const isRecruiter = computed(() => user.value.role === "recruiter");
 
     async function userLogout() {
       await logout();
       token.value = "";
       user.value = {};
-
-      router.push("/HomeView");
+      router.push("/");
     }
 
     async function userLogin(data) {
-      const response = await login(data);
-      if (response.status === 200) {
-        alert("Usuário logado com sucesso!");
-        token.value = response.data.token;
-        user.value = response.data.user;
+      try {
+        const response = await login(data);
 
-        router.push("/Dashboard");
-      } else {
+        if (response.status === 200) {
+          alert("Usuário logado com sucesso!");
+          token.value = response.data.token;
+          user.value = response.data.user;
+
+          router.push("/Dashboard");
+        }
+      } catch (error) {
+        console.error("Erro ao tentar logar:", error);
         alert("Erro ao logar usuário!");
       }
     }
 
     async function userRegister(data) {
-      const response = await register(data);
-      if (response.status === 201) {
-        alert("Usuário cadastrado com sucesso!");
-        token.value = response.data.token;
-        user.value = response.data.user;
+      try {
+        const response = await register(data);
 
-        router.push("/Dashboard");
-      } else {
+        if (response.status === 201) {
+          alert("Usuário cadastrado com sucesso!");
+          token.value = response.data.token;
+          user.value = response.data.user;
+
+          router.push("/Dashboard");
+        }
+      } catch (error) {
+        console.error("Erro ao tentar cadastrar:", error);
         alert("Erro ao cadastrar usuário!");
+      }
+    }
+
+    async function changeUserRole() {
+      const response = await changeRole();
+      if (response.status === 200) {
+        user.value.role = response.data.role;
       }
     }
 
     return {
       token,
       isAuthenticated,
+      isRecruiter,
       user,
       userLogout,
       userLogin,
       userRegister,
+      changeUserRole,
     };
   },
   {

@@ -1,28 +1,36 @@
 <script setup>
+import { useAuthStore } from "@/stores/authStore";
 import { ref } from "vue";
-const showModal = ref(false);
-// import { addToMyVacancies } from "../stores/vacanciesState"; // Ajuste o caminho para o arquivo correto
 
-function closeModal() {
-  showModal.value = false;
-}
+const authStore = useAuthStore();
+
+const props = defineProps({
+  title: String,
+  category: String,
+  location: String,
+  description: String,
+});
+
+const modal = ref(false);
+
 </script>
 
 <template>
   <div class="card">
-    <img src="" />
+    <img src="..." />
     <div class="cardInfos">
-      <h3>Vaga:</h3>
-      <p>Categoria:</p>
-      <p>Área de atuação:</p>
-      <p>Localidade:</p>
-      <button @click="showModal = true">Saiba mais</button>
-      <div v-if="showModal" class="modal">
+      <h3>{{ props.title }}</h3>
+      <p>{{ props.category }}</p>
+      <p>{{ props.location }}</p>
+      <p>{{ props.description }}</p>
+      
+      <button @click="modal = true">Saiba mais</button>
+
+      <div v-if="modal" class="modal">
         <div class="modalContent">
-          <h3>Detalhes da Vaga</h3>
-          <p></p>
-          <button @click="closeModal">Fechar</button>
-          <button @click="addToMyVacancies">Candidatar-se</button>
+          <h3>{{props.title}}</h3>
+          <button @click="modal = false">Fechar</button>
+          <button>Candidatar-se</button>
         </div>
       </div>
     </div>
