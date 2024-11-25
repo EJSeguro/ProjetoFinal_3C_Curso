@@ -9,24 +9,25 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
 
-    public function index()
+    public function show(int $id)
     {
-        //
+        $user = User::findOrFail($id);
+        return response()->json($user);
     }
 
-    public function store(Request $request)
+    public function update(Request $request)
     {
-        //
-    }
+        $valdiated = $request->validate([
+            'about' => 'sometimes|string',
+            'curriculum'=>'sometimes|string',
+            'profileImg'=>'sometimes|string',
+            'backgroundProfileImg'=>'sometimes|string',
 
-    public function show(User $user)
-    {
-        //
-    }
+        ]);
 
-    public function update(Request $request, User $user)
-    {
-        //
+        $user=Auth::user();
+        $user->update($valdiated);
+        return response()->json(['message' => 'Profile updated successfully', 'data' => $user, 200]);
     }
 
     public function changeRole()

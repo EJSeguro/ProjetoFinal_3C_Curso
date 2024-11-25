@@ -1,10 +1,9 @@
 <script setup>
 import ChangeFormComponent from "@/components/ChangeFormComponent.vue";
-import { register, login } from "@/services/HttpService";
+import { useAuthStore } from "@/stores/authStore";
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 
-const router = useRouter();
+const authStore = useAuthStore();
 
 const registerUser = ref({
   name:'',
@@ -25,23 +24,11 @@ function changeForm(value) {
 }
 
 async function userLogin() {
-  const response = await login(loginUser.value);
-  if (response.status === 200) {
-    alert("Usuário logado com sucesso!");
-    router.push("/Dashboard");
-  } else {
-    alert("Erro ao logar usuário!");
-  }
+  authStore.userLogin(loginUser.value);
 }
 
 async function registrateUser() {
-  const response = await register(registerUser.value);
-  if (response.status === 201) {
-    alert("Usuário cadastrado com sucesso!");
-    router.push("/Dashboard");
-  } else {
-    alert("Erro ao cadastrar usuário!");
-  }
+  authStore.userRegister(registerUser.value);
 }
 </script>
 

@@ -8,10 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ApplicationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function indexApplicationsVacancy($vacancyId)
+    public function getApplicationsFromVacancy($vacancyId)
     {
         $applications = Application::whereHas('vacancy', function ($query) {
             $query->where('user_id', Auth::user()->id);
@@ -20,7 +17,7 @@ class ApplicationController extends Controller
         return response()->json($applications);
     }
 
-    public function indexApplicationsAll()
+    public function getAllApplicationsFromAllVacancies()
     {
         $applications = Application::whereHas('vacancy', function ($query) {
             $query->where('user_id', Auth::user()->id);
@@ -29,15 +26,13 @@ class ApplicationController extends Controller
         return response()->json($applications);
     }
 
-    public function indexApplicationsCandidate()
+    public function getCandidateApplications()
     {
         $applications = Application::where('user_id', Auth::user()->id)->all();
 
         return response()->json($applications);
     }
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
         $validate = $request->validate([

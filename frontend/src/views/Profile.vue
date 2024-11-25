@@ -1,229 +1,137 @@
 <script setup>
 import HeaderPointer from "@/components/HeaderPointer.vue";
-import { ref } from "vue";
+import Modal from "@/components/Modal.vue";
+import { useAuthStore } from "@/stores/authStore";
+import { ref, reactive } from "vue";
 
-const profileImage = ref("link_da_imagem_de_perfil.jpg");
-function triggerUpload(type) {
-  // Define o clique do input escondido correspondente
-  if (type === "profile") {
-    fileInputProfile.value.click();
-  } else if (type === "background") {
-    fileInputBackground.value.click();
-  }
-}
+const authStore = useAuthStore();
 
-function uploadImage(type, event) {
-  // Carrega a imagem no componente
+// Estado reativo para imagens e modais
+const state = reactive({
+  images: {
+    profile: "link_da_imagem_de_perfil.jpg",
+    background: "",
+  },
+  modals: {
+    about: false,
+    experience: false,
+    education: false,
+  },
+  modalText: "",
+  texts: [],
+  role: "candidato",
+});
+
+const fileInputs = {
+  profile: ref(null),
+  background: ref(null),
+};
+
+// Função genérica para abrir input de arquivo
+const triggerUpload = (type) => fileInputs[type]?.value?.click();
+
+// Função genérica para upload de imagem
+const uploadImage = (type, event) => {
   const file = event.target.files[0];
-  if (file) {
-    const url = URL.createObjectURL(file);
-    if (type === "profile") {
-      profileImage.value = url;
-    } else if (type === "background") {
-      backgroundImage.value = url;
-    }
-  }
-}
+  if (file) state.images[type] = URL.createObjectURL(file);
+};
 
-function updateModal() {
-  showModal.value = !showModal.value;
-  texts.value.push(modalText.value);
-  modalText.value = "";
-}
+// Controle de modais
+const toggleModal = (modal) => (state.modals[modal] = !state.modals[modal]);
 
-function saveAndClose() {
-  showModal2.value = false;
-  texts.value.push(modalText.value);
-  modalText.value = "";
-}
+const saveModalData = (modal) => {
+  state.texts.push(state.modalText);
+  state.modalText = "";
+  toggleModal(modal);
+};
 
-function saveButtonModal3() {
-  showModal3.value = false;
-  texts.value.push(modalText.value);
-  modalText.value = "";
-}
-
-const fileInputBackground = ref(null);
-
-const fileInputProfile = ref(null);
-
-const showModal = ref(false);
-const showModal2 = ref(false);
-const showModal3 = ref(false);
-
-const modalText = ref("");
-const texts = ref([]);
-
-// Estado reativo para controlar o papel do usuário (Recrutador ou Candidato)
-const role = ref("candidato");
-
-// Função para Criar e Editar Vaga
-function createJob() {
-  alert("Criar Vaga");
-}
-
-function editJob() {
-  alert("Editar Vaga");
-}
+// Funções de recrutador
+const handleRecruiterAction = (action) => alert(action);
 </script>
 
 <template>
   <HeaderPointer />
   <div class="mainProfile">
     <div class="profile">
+      <!-- Background Image -->
       <div class="backgroundImage">
-        <img
-          :src="backgroundImage"
-          alt="Background Image"
-          class="background-image"
-        />
-        <button
-          class="editBackgroundImage"
-          @click="triggerUpload('background')"
-        >
-          <font-awesome-icon
-            icon="fa-regular fa-pen-to-square"
-            id="iconPencilBackgroundImage"
-          />
+        <img :src="state.images.background" alt="Background Image" class="background-image" />
+        <button class="editBackgroundImage" @click="triggerUpload('background')">
+          <font-awesome-icon icon="fa-regular fa-pen-to-square" />
         </button>
       </div>
+
+      <!-- Profile Image -->
       <div class="profileImageDiv" @click="triggerUpload('profile')">
-        <font-awesome-icon
-          icon="fa-regular fa-pen-to-square"
-          id="iconPencilProfileImage"
-        />
-        <img :src="profileImage" alt="Profile Image" class="profile-image" />
+        <font-awesome-icon icon="fa-regular fa-pen-to-square" />
+        <img :src="state.images.profile" alt="Profile Image" class="profile-image" />
       </div>
+
+      <!-- User Role -->
       <section class="userProfile">
         <div class="nameProfile">
           <h1>Seu nome</h1>
           <h3>Informações Gerais</h3>
-          <select class="selectedRole" v-model="role">
+          <select v-model="state.role" class="selectedRole">
             <option value="candidato">Candidato</option>
             <option value="recruiter">Recrutador</option>
           </select>
-          <div v-if="role === 'recruiter'" class="recrutador-options">
+          <div v-if="state.role === 'recruiter'" class="recrutador-options">
             <h2>Opções de Recrutador</h2>
-            <button @click="createJob">Criar Vaga</button>
-            <button @click="editJob">Editar Vaga</button>
+            <button @click="handleRecruiterAction('Criar Vaga')">Criar Vaga</button>
+            <button @click="handleRecruiterAction('Editar Vaga')">Editar Vaga</button>
           </div>
         </div>
       </section>
+
+      <!-- Modais genéricos -->
       <div class="aboutProfile">
         <div class="aboutText">
           <h1>Sobre</h1>
-          <button @click="showModal = true" id="buttonOpenModal">
-            <font-awesome-icon icon="fa-solid fa-plus" />
-          </button>
-          <div v-if="showModal" class="modal">
-            <div class="modalContent">
-              <h3>Adicionar Informações</h3>
-              <textarea
-                v-model="modalText"
-                id="mensagem"
-                rows="4"
-                cols="50"
-                placeholder="Digite sua mensagem aqui..."
-              ></textarea>
-              <button @click="updateModal" id="buttonCloseModal">Salvar</button>
-            </div>
-          </div>
+          <button @click="toggleModal('about')"><font-awesome-icon icon="fa-solid fa-plus" /></button>
+          <Modal v-if="state.modals.about" title="Adicionar Informações" @close="saveModalData('about')">
+            <textarea v-model="state.modalText" placeholder="Digite sua mensagem aqui..."></textarea>
+          </Modal>
         </div>
-        <!-- <div v-for="text in texts" class="exibicaoTexto"> -->
-        <!-- <div> -->
-        <!-- {{ text }} -->
-        <!-- </div> -->
-        <!-- </div> -->
       </div>
+
       <div class="experiencieProfile">
         <div class="experiencieProfileContent">
           <h1>Experiências</h1>
-          <button @click="showModal2 = true" id="buttonOpenModal2">
-            <font-awesome-icon icon="fa-solid fa-plus" />
-          </button>
-          <div v-if="showModal2" class="modal">
-            <div class="modalContent">
-              <h3>Adicionar Informações sobre suas Experiências</h3>
-              <div class="divModal">
-                <p>Título</p>
-                <input
-                  class="inputsExperiencie"
-                  type="text"
-                  placeholder="Nome da empresa"
-                />
-                <p>Descrição</p>
-                <textarea
-                  v-model="modalText"
-                  id="mensagem"
-                  rows="4"
-                  cols="50"
-                  placeholder="Descreva a sua experiência..."
-                ></textarea>
-                <p>Data de Ingresso</p>
-                <input class="inputsExperiencie" type="date" />
-                <p>Data em que saiu</p>
-                <input class="inputsExperiencie" type="date" />
-                <button @click="saveAndClose">Salvar</button>
-              </div>
-            </div>
-          </div>
+          <button @click="toggleModal('experience')"><font-awesome-icon icon="fa-solid fa-plus" /></button>
+          <Modal v-if="state.modals.experience" title="Adicionar Experiências" @close="saveModalData('experience')">
+            <p>Título</p>
+            <input type="text" placeholder="Nome da empresa" />
+            <p>Descrição</p>
+            <textarea v-model="state.modalText" placeholder="Descreva sua experiência..."></textarea>
+          </Modal>
         </div>
       </div>
+
       <div class="academicTraining">
         <div class="academicTrainingContent">
           <h1 class="noBreak">Formação acadêmica</h1>
-          <button @click="showModal3 = true" id="buttonOpenModal3">
-            <font-awesome-icon icon="fa-solid fa-plus" />
-          </button>
-          <div v-if="showModal3" class="modal">
-            <div class="modalContent">
-              <h3>Adicionar Informações sobre suas Experiências</h3>
-              <div class="divModal3">
-                <p>Nome da Instituição</p>
-                <input
-                  class="inputsExperiencie"
-                  type="text"
-                  placeholder="Digite o nome da instituição"
-                />
-                <p>Descrição</p>
-                <textarea
-                  v-model="modalText"
-                  id="mensagem"
-                  rows="4"
-                  cols="50"
-                  placeholder="Descreva a sua experiência..."
-                ></textarea>
-                <p>Data de Ingresso</p>
-                <input class="inputsExperiencie" type="date" />
-                <p>Data de fim</p>
-                <input class="inputsExperiencie" type="date" />
-                <button @click="saveButtonModal3">Salvar</button>
-              </div>
-            </div>
-          </div>
+          <button @click="toggleModal('education')"><font-awesome-icon icon="fa-solid fa-plus" /></button>
+          <Modal v-if="state.modals.education" title="Adicionar Formação Acadêmica" @close="saveModalData('education')">
+            <p>Nome da Instituição</p>
+            <input type="text" placeholder="Digite o nome da instituição" />
+            <p>Descrição</p>
+            <textarea v-model="state.modalText" placeholder="Descreva sua formação..."></textarea>
+          </Modal>
         </div>
       </div>
     </div>
   </div>
 
-  <input
-    type="file"
-    ref="fileInputProfile"
-    @change="uploadImage('profile')"
-    style="display: none"
-  />
-  <input
-    type="file"
-    ref="fileInputBackground"
-    @change="uploadImage('background')"
-    style="display: none"
-  />
+  <!-- Hidden file inputs -->
+  <input type="file" ref="fileInputs.profile" @change="(e) => uploadImage('profile', e)" style="display: none" />
+  <input type="file" ref="fileInputs.background" @change="(e) => uploadImage('background', e)" style="display: none" />
 </template>
 
 <style scoped>
 * {
-  padding: 0%;
-  margin: 0%;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -232,49 +140,43 @@ function editJob() {
   background-color: rgb(184, 184, 184);
   display: flex;
   justify-content: center;
+  padding: 20px;
 }
 
 .profile {
   background-color: white;
-  margin: 2%;
   border-radius: 10px;
   width: 100%;
+  max-width: 1200px;
   display: flex;
   flex-direction: column;
-  height: max-content;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
+/* Background Image Section */
 .backgroundImage {
+  position: relative;
   width: 100%;
   height: 250px;
-  display: flex;
   background-size: cover;
   background-color: var(--roxo);
-  box-shadow: 0px 4px 10px -7px black;
-  justify-content: end;
+  display: flex;
+  justify-content: flex-end;
   align-items: flex-end;
-  border-radius: 10px 10px 0px 0px;
-  position: relative;
 }
 
-#iconPencilBackgroundImage {
-  height: 90%;
-}
-
-.backgroundImage button {
-  height: 35px;
-  width: 35px;
-  border-radius: 50%;
-  margin: 0px 2% 2% 0px;
-  border: none;
-  padding: 4px;
-  background-color: rgb(192, 192, 192);
-  border: 3px solid white;
+.backgroundImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px 10px 0 0;
 }
 
 .editBackgroundImage {
   position: absolute;
-  top: 12px;
+  top: 10px;
+  right: 10px;
   background: rgba(255, 255, 255, 0.8);
   border: none;
   padding: 5px;
@@ -282,237 +184,160 @@ function editJob() {
   cursor: pointer;
 }
 
-.profileImage {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  cursor: pointer;
-  border: 2px solid white;
-}
-
+/* Profile Image Section */
 .profileImageDiv {
   position: relative;
-  bottom: 7rem;
-  left: 5rem;
-  border-radius: 50%;
+  margin: -100px auto 20px;
   width: 200px;
   height: 200px;
   background-color: rgb(192, 192, 192);
+  border-radius: 50%;
   border: 4px solid white;
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
   overflow: hidden;
+  cursor: pointer;
 }
 
-#iconPencilProfileImage {
-  position: absolute;
-  bottom: 7.2rem;
-  left: 5.57rem;
-  height: 15%;
+.profileImageDiv img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
+/* User Profile Section */
 .userProfile {
   display: flex;
-  justify-content: space-between;
-  position: relative;
-  margin: 0% 8% 0% 8%;
-  align-items: center;
-}
-
-.nameProfile {
-  display: flex;
   flex-direction: column;
-  gap: 16px;
-  font-family: var(--fonte1);
+  align-items: center;
+  gap: 20px;
+  margin: 20px 0;
 }
 
 .nameProfile h1 {
   font-size: 30px;
+  font-weight: bold;
+  text-align: center;
 }
 
 .nameProfile h3 {
   font-size: 18px;
-  font-weight: 400;
+  font-weight: normal;
+  text-align: center;
+  color: gray;
 }
 
-.selectedRoule {
-  width: 12%;
-  min-width: 150px;
-  border-radius: 10px;
-  height: 40px;
-  padding-left: 7px;
-  background-color: rgb(134, 156, 255);
+.selectedRole {
+  width: 200px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid rgb(134, 156, 255);
+  background-color: rgb(240, 240, 255);
   cursor: pointer;
 }
 
-.aboutProfile {
-  flex-direction: column;
-  position: relative;
-  font-family: var(--fonte1);
-  border-radius: 8px;
-  border: 2px solid rgb(134, 156, 255);
-  width: 85%;
-  margin: 2rem 6rem;
+.recrutador-options button {
+  margin: 5px;
+  padding: 10px 20px;
+  background-color: #008cba;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.recrutador-options button:hover {
+  background-color: #007bb5;
+}
+
+/* Section Styles */
+.aboutProfile,
+.experiencieProfile,
+.academicTraining {
+  margin: 20px auto;
   padding: 20px;
+  width: 85%;
+  max-width: 800px;
+  border: 2px solid rgb(134, 156, 255);
+  border-radius: 8px;
+  background-color: white;
 }
 
-.aboutProfile h1 {
-  font-size: 30px;
-  font-weight: 550;
+.aboutProfile h1,
+.experiencieProfile h1,
+.academicTraining h1 {
+  font-size: 24px;
+  font-weight: bold;
 }
 
-.aboutProfile button {
-  padding: 5px;
-  margin-left: 80%;
-  height: 35px;
-  border-radius: 20%;
-  border-color: rgb(134, 156, 255);
+.aboutProfile button,
+.experiencieProfile button,
+.academicTraining button {
+  float: right;
+  padding: 5px 10px;
+  background-color: rgb(134, 156, 255);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-.aboutText {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.aboutProfile button:hover,
+.experiencieProfile button:hover,
+.academicTraining button:hover {
+  background-color: rgb(114, 136, 235);
 }
 
+/* Modal Styles */
 .modal {
   position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1000;
 }
 
 .modalContent {
-  background-color: #fff;
+  background-color: white;
   padding: 20px;
   border-radius: 8px;
-  width: 600px;
-  height: auto;
+  width: 400px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
   text-align: center;
 }
 
 .modalContent h3 {
-  font-family: var(--fonte1);
   font-size: 20px;
-  padding: 1rem;
+  margin-bottom: 10px;
+}
+
+.modalContent textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid rgb(200, 200, 200);
+  border-radius: 5px;
+  resize: none;
+  margin-bottom: 10px;
 }
 
 .modalContent button {
-  border-radius: 5%;
-  margin-top: 1rem;
-  width: 6rem;
-  margin-left: 75%;
+  margin-top: 10px;
+  padding: 10px 20px;
   background-color: rgb(134, 156, 255);
-}
-
-.experiencieProfile {
-  flex-direction: column;
-  position: relative;
-  font-family: var(--fonte1);
-  border-radius: 8px;
-  border: 2px solid rgb(134, 156, 255);
-  width: 85%;
-  margin: 2rem 6rem;
-  padding: 20px;
-  height: 80px;
-}
-
-.experiencieProfile h1 {
-  font-size: 30px;
-  font-weight: 550;
-}
-
-.experiencieProfile button {
-  padding: 5px;
-  margin-left: 80%;
-  height: 35px;
-  border-radius: 20%;
-  border-color: rgb(134, 156, 255);
-}
-
-.experiencieProfileContent {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.divModal {
-  display: flex;
-  flex-direction: column;
-}
-
-.divModal button {
-  border-radius: 5%;
-  margin-top: 1rem;
-  width: 6rem;
-  margin-left: 83%;
-  background-color: rgb(134, 156, 255);
-}
-
-.academicTraining {
-  flex-direction: column;
-  position: relative;
-  font-family: var(--fonte1);
-  border-radius: 8px;
-  border: 2px solid rgb(134, 156, 255);
-  width: 85%;
-  margin: 2rem 6rem;
-  padding: 20px;
-  height: 80px;
-}
-
-.academicTraining h1 {
-  font-size: 30px;
-  font-weight: 550;
-}
-
-.academicTraining button {
-  padding: 5px;
-  margin-left: 60%;
-  height: 35px;
-  border-radius: 20%;
-  border-color: rgb(134, 156, 255);
-}
-
-.academicTrainingContent {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.noBreak {
-  white-space: nowrap;
-}
-
-.divModal3 {
-  display: flex;
-  flex-direction: column;
-}
-
-.divModal3 button {
-  border-radius: 5%;
-  margin-top: 1rem;
-  width: 6rem;
-  margin-left: 83%;
-  background-color: rgb(134, 156, 255);
-}
-
-.recrutador-options button {
-  padding: 10px;
-  background-color: #008cba;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
-  margin: 5px;
 }
 
-.recrutador-options button:hover {
-  background-color: #007bb5;
+.modalContent button:hover {
+  background-color: rgb(114, 136, 235);
 }
 </style>

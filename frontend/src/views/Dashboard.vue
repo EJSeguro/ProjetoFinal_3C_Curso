@@ -1,6 +1,7 @@
 <script setup>
 import HeaderPointer from "@/components/HeaderPointer.vue";
 import VacancieCard from "@/components/VacancieCard.vue";
+
 </script>
 
 <template>

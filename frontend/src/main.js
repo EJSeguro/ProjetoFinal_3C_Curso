@@ -21,6 +21,7 @@ import "bootstrap";
 
 import { createApp } from "vue";
 import { createPinia } from "pinia";
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { vMaska } from "maska/vue";
 
 import App from "./App.vue";
@@ -30,7 +31,10 @@ const app = createApp(App);
 app.directive("maska", vMaska);
 app.component("font-awesome-icon", FontAwesomeIcon);
 
-app.use(createPinia());
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
+
+app.use(pinia);
 app.use(router);
 
 app.mount("#app");
