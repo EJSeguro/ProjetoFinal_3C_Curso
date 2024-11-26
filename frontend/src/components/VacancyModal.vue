@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, defineProps, watch, computed } from 'vue';
 import { storeVacancy, updateVacancy } from '@/services/HttpService';
 import { Modal } from 'bootstrap';
 
@@ -14,6 +14,7 @@ const props = defineProps({
     isEdit: false,
     id: null,
     addVacancy: null,
+    updateVacancy: null,
 });
 
 const title = ref(props.initialTitle);
@@ -23,6 +24,7 @@ const image = ref(props.initialImage);
 const field = ref(props.initialField);
 const location = ref(props.initialLocation);
 const active = ref(props.initialActive);
+const modalId = computed(() => (props.id ? `modalEdit-${props.id}` : "newVacancyModal"));
 
 const resetForm = () => {
     if (!props.isEdit) {
@@ -37,7 +39,7 @@ const resetForm = () => {
 };
 
 const closeModal = () => {
-    const modalElement = document.getElementById('vacancyModal');
+    const modalElement = document.getElementById(modalId.value);
     if (modalElement) {
         const modalInstance = Modal.getInstance(modalElement) || new Modal(modalElement);
         modalInstance.hide();
@@ -60,14 +62,14 @@ const storeUpdateVacancy = async () => {
         const response = await updateVacancy(props.id, vacancyData);
 
         if (response.status === 200) {
-            alert("Vaga atualizada com sucesso!");
+            props.updateVacancy(response.data);
             closeModal();
         }
     } else {
         const response = await storeVacancy(vacancyData);
 
         if (response.status === 201) {
-            props.addVacancy(vacancyData);
+            props.addVacancy(response.data.vacancy);
             closeModal();
         }
     }
@@ -75,14 +77,14 @@ const storeUpdateVacancy = async () => {
 </script>
 
 <template>
-    <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#vacancyModal">
-        Nova Vaga
+    <button class="btn btn-primary" type="button" data-bs-toggle="modal" :data-bs-target="'#' + modalId">
+        {{ initialTitle ? "Editar Vaga" : "Nova Vaga" }}
     </button>
-    <div class="modal fade" id="vacancyModal" tabindex="-1" aria-hidden="true" >
+    <div class="modal fade" :id="modalId" tabindex="-1" aria-hidden="true" >
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ title ? "Editar Vaga" : "Nova Vaga" }}</h5>
+                    <h5 class="modal-title">{{ initialTitle ? "Editar Vaga" : "Nova Vaga" }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
                 <div class="modal-body">
@@ -98,8 +100,12 @@ const storeUpdateVacancy = async () => {
                         </div>
                         <div class="mb-3">
                             <label for="category" class="form-label">Categoria da Vaga</label>
-                            <input type="text" class="form-control" v-model="category"
-                                placeholder="Categoria da Vaga" />
+                            <select class="form-select" v-model="category"
+                                placeholder="Categoria da Vaga">
+                                <option value="presencial">Presencial</option>
+                                <option value="homeoffice">Home Office</option>
+                                <option value="hybrid">Híbrido</option>
+                        </select>
                         </div>
                         <div class="mb-3">
                             <label for="image" class="form-label">Imagem da Vaga</label>

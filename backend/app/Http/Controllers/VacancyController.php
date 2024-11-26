@@ -28,7 +28,7 @@ class VacancyController extends Controller
             'title' => 'required|string',
             'description' => 'required|string',
             'category' => 'required|string',
-            'image' => 'required|string',
+            'image' => 'sometimes|string',
             'field' => 'required|string',
             'location' => 'required|string',
             'active' => 'required|boolean',
@@ -37,7 +37,7 @@ class VacancyController extends Controller
         $validated['user_id']= Auth::user()->id;
         $vaccancie = Vacancy::create($validated);
 
-        return response()->json(['message' => 'Vacancy created successfully', $vaccancie], 201);
+        return response()->json(['message' => 'Vacancy created successfully', 'vacancy' => $vaccancie], 201);
     }
 
     public function show(int $id)

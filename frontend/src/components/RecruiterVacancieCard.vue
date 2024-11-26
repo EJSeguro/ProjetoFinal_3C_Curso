@@ -1,49 +1,48 @@
 <script setup>
-import { useAuthStore } from "@/stores/authStore";
-import { ref } from "vue";
-
-const authStore = useAuthStore();
+import { ref, watch } from "vue";
+import VacancyModal from "./VacancyModal.vue";
 
 const props = defineProps({
-  title: String,
-  category: String,
-  location: String,
-  description: String,
+  vacancy: {
+    type: Object,
+    required: true
+  }
 });
 
-const modal = ref(false);
+const localVacancy = ref({ ...props.vacancy });
+
+function updateVacancy(updatedVacancy) {
+  localVacancy.value = updatedVacancy;
+}
 
 </script>
 
 <template>
   <div class="card">
-    <img src="..." />
+    <img :src="localVacancy.image" />
     <div class="cardInfos">
-      <h3>{{ props.title }}</h3>
-      <p>{{ props.category }}</p>
-      <p>{{ props.location }}</p>
-      <p>{{ props.description }}</p>
-      
-      <button @click="modal = true">Editar</button>
-
-      <div v-if="modal" class="modal">
-        <div class="modalContent">
-          <h3>{{props.title}}</h3>
-          <button @click="modal = false">Fechar</button>
-          <button>Salvar</button>
-        </div>
+      <h3>{{ localVacancy.title }}</h3>
+      <p>{{ localVacancy.category }}</p>
+      <p>{{ localVacancy.location }}</p>
+      <p>{{ localVacancy.description }}</p>
+      <div>
+      <VacancyModal :initialTitle="props.vacancy.title" :initialDescription="props.vacancy.description"
+        :initialCategory="props.vacancy.category" :initializeImage="props.vacancy.image"
+        :initialField="props.vacancy.field" :initialLocation="props.vacancy.location"
+        :initialActive="props.vacancy.active" :id="props.vacancy.id" :updateVacancy="updateVacancy" isEdit="true" />
+        <font-awesome-icon class="trashCan" icon="fa-solid fa-trash-can" />
       </div>
     </div>
   </div>
+
 </template>
 
 <style scoped>
+
 .card {
   padding: 16px;
-  border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   height: 250px;
   width: 450px;
   display: flex;
@@ -72,38 +71,15 @@ const modal = ref(false);
 
 .card img {
   height: 100%;
-  width: 100%;
-}
-
-.modal {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modalContent {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  width: 600px;
-  height: auto;
-}
-
-.modalContent h3 {
-  margin-left: 30%;
-}
-
-.modalContent p {
-  width: 90%;
-}
-
-.modalContent button {
-  margin-top: 75px;
-  margin-left: 90px;
   width: 150px;
+}
+
+.trashCan {
+  position: absolute;
+  right: 20px;
+  bottom:40px;
+  color: red;
+  font-size: 25px;
+  cursor: pointer;
 }
 </style>

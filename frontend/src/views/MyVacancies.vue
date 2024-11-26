@@ -46,16 +46,16 @@ watch(
 
 <template>
   <main class="mainContainer">
+    <div class="title">
     <div class="vacanciesTitle">
       <h1 v-if="!authStore.isRecruiter">Minhas Vagas</h1>
       <h1 v-if="authStore.isRecruiter" class="vacanciesTitle">Gerenciar Vagas</h1>
-
-      <VacancyModal v-if="authStore.isRecruiter" :addVacancy="addVacancy" />
     </div>
+    <VacancyModal v-if="authStore.isRecruiter" :addVacancy="addVacancy" />
+  </div>
 
     <div class="vacanciesContainer">
-      <VacancieCard v-for="vacancy in vacancies" :key="vacancy.id" :title="vacancy.title" :category="vacancy.category"
-        :location="vacancy.location" :description="vacancy.description" />
+      <VacancieCard v-for="vacancy in vacancies" :key="vacancy.id" :vacancy="vacancy" />
     </div>
   </main>
 </template>
@@ -65,24 +65,30 @@ watch(
   background-color: rgb(134, 156, 255);
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  align-items: center; 
   width: 100%;
   min-height: 100vh;
 }
 
-.vacanciesTitle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem 1rem;
-  margin-top: 10px;
-}
 
 .vacanciesContainer {
-  display: grid;
-  margin: 2% 2% 2% 2%;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
-  grid-template-columns: 1fr 1fr 1fr;
+display: flex;
+flex-wrap: wrap;
+gap: 20px;
+justify-content: center;
+}
+
+.title{
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  gap: 25px;
+  margin-bottom: 20px;
+  width: 100%;
+  padding-left: 2% ;
+  padding-right: 2%;
+  margin-top: 4%;
+  margin-bottom: 2%;
 }
 </style>
