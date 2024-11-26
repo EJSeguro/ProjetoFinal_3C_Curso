@@ -117,3 +117,14 @@ export const getVacancyById = async (id) => {
 export const getRecruiterVacancies = async () => {
     return await httpService.get('recruiter/vacancies', { headers: authHeader() });
 };
+
+export const uploadImage = async (data) => {
+    let headers = authHeader();
+    headers["Content-Type"] = "multipart/form-data";
+    
+    return await httpService.post('uploadImage', data, { headers: headers });
+};
+
+export const getImage = async (type, id) => {
+    return await httpService.get(`images/${type}/${id}`, { headers: authHeader() });
+};

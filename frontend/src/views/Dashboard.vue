@@ -1,5 +1,4 @@
 <script setup>
-import VacancieCard from "@/components/RecruiterVacancieCard.vue";
 
 </script>
 
@@ -7,7 +6,7 @@ import VacancieCard from "@/components/RecruiterVacancieCard.vue";
   <main class="mainContainer">
     <h1 class="nameContainer">Vagas Disponíveis</h1>
     <div class="vacanciesContainer">
-
+      
     </div>
   </main>
 </template>

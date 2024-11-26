@@ -1,5 +1,5 @@
 <script setup>
-import ChangeFormComponent from "@/components/ChangeFormComponent.vue";
+import ChangeAuthFormComponent from "@/components/ChangeAuthFormComponent.vue";
 import { useAuthStore } from "@/stores/authStore";
 import { ref } from "vue";
 
@@ -46,7 +46,7 @@ async function registrateUser() {
           <h2>Olá de novo!</h2>
           <p>Seja bem vindo!</p>
         </div>
-        <ChangeFormComponent :changeForm="changeForm" :value="isActive" />
+        <ChangeAuthFormComponent :changeForm="changeForm" :value="isActive" />
         <input class="inputLogin" type="email" placeholder="Email" v-model="loginUser.email" />
         <input class="inputLogin" type="password" placeholder="Senha" v-model="loginUser.password" />
         <button class="buttonLogin" type="submit">Login</button>
@@ -60,7 +60,7 @@ async function registrateUser() {
           <h2>Olá, como você está?</h2>
           <p>Seja bem vindo!</p>
         </div>
-        <ChangeFormComponent :changeForm="changeForm" :value="isActive" />
+        <ChangeAuthFormComponent :changeForm="changeForm" :value="isActive" />
 
         <input class="inputLogin" type="text" placeholder="Nome Completo" v-model="registerUser.name" />
         <input class="inputLogin" type="email" placeholder="Email" v-model="registerUser.email" />

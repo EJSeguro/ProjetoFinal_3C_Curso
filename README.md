@@ -56,3 +56,7 @@ Esses comandos irão:
 - **Atualizar as dependências** com o `composer update`.
 - **Gerar a chave de aplicação** com `php artisan key:generate`.
 - **Rodar as migrações do banco de dados** com `php artisan migrate`.
+
+
+
+php artisan storage:link

@@ -1,14 +1,16 @@
 <script setup>
 import { RouterView } from "vue-router";
-import HeaderPointer from "./components/HeaderPointer.vue";
+import HeaderComponent from "./components/HeaderComponent.vue";
 import { useAuthStore } from "./stores/authStore";
 
 const authStore = useAuthStore();
 </script>
 
 <template>
-  <HeaderPointer v-if="authStore.isAuthenticated" />
-  <RouterView />
+  <div>
+    <HeaderComponent v-if="authStore.isAuthenticated" />
+    <RouterView />
+  </div>
 </template>
 
 <style>

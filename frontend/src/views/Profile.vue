@@ -11,7 +11,7 @@ const authStore = useAuthStore();
       <img class="backgroundImg" src="" />
       <div class="profile">
         <font-awesome-icon id="editProfileInfosIcon" icon="fa-solid fa-user-pen" />
-        <img class="profileImg" />
+        <img class="profileImg" src="../assets/profile.webp" />
           <div class="profileInfo">
             <h1 class="name">{{ authStore.user.name }}</h1>
             <h2 class="title">Título</h2>

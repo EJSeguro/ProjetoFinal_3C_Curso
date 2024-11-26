@@ -1,13 +1,12 @@
 <script setup>
-import { ref, defineProps, watch, computed } from 'vue';
-import { storeVacancy, updateVacancy } from '@/services/HttpService';
+import { ref, defineProps, computed } from 'vue';
+import { storeVacancy, updateVacancy, uploadImage } from '@/services/HttpService';
 import { Modal } from 'bootstrap';
 
 const props = defineProps({
     initialTitle: "",
     initialDescription: "",
     initialCategory: "",
-    initialImage: "",
     initialField: "",
     initialLocation: "",
     initialActive: "",
@@ -20,18 +19,18 @@ const props = defineProps({
 const title = ref(props.initialTitle);
 const description = ref(props.initialDescription);
 const category = ref(props.initialCategory);
-const image = ref(props.initialImage);
 const field = ref(props.initialField);
 const location = ref(props.initialLocation);
 const active = ref(props.initialActive);
 const modalId = computed(() => (props.id ? `modalEdit-${props.id}` : "newVacancyModal"));
+
+const image = ref(null);
 
 const resetForm = () => {
     if (!props.isEdit) {
         title.value = "";
         description.value = "";
         category.value = "";
-        image.value = "";
         field.value = "";
         location.value = "";
         active.value = false;
@@ -52,7 +51,6 @@ const storeUpdateVacancy = async () => {
         title: title.value,
         description: description.value,
         category: category.value,
-        image: image.value,
         field: field.value,
         location: location.value,
         active: active.value,
@@ -62,6 +60,11 @@ const storeUpdateVacancy = async () => {
         const response = await updateVacancy(props.id, vacancyData);
 
         if (response.status === 200) {
+
+            if(image.value) {
+                response.data.imageUpdate = await uploadVacancyImage(props.id);
+            }
+
             props.updateVacancy(response.data);
             closeModal();
         }
@@ -69,11 +72,38 @@ const storeUpdateVacancy = async () => {
         const response = await storeVacancy(vacancyData);
 
         if (response.status === 201) {
+            
+            if(image.value) {
+                response.data.vacancy.image = await uploadVacancyImage(response.data.vacancy.id);
+            }
+
             props.addVacancy(response.data.vacancy);
             closeModal();
         }
     }
 };
+
+const handleImage = (event) => {
+  const file = event.target.files[0];
+ 
+  if (file) {
+    image.value = file;
+  }
+};
+
+const uploadVacancyImage = async (vacancyId) => {
+  const data = new FormData();
+  data.append("image", image.value);
+  data.append("type", "vacancy");
+  data.append("vacancyId", vacancyId);
+
+  const response = await uploadImage(data);
+
+  if (response.status === 201) {
+    return response.data.path;
+  }
+};
+
 </script>
 
 <template>
@@ -109,7 +139,7 @@ const storeUpdateVacancy = async () => {
                         </div>
                         <div class="mb-3">
                             <label for="image" class="form-label">Imagem da Vaga</label>
-                            <input type="text" class="form-control" v-model="image" placeholder="Imagem da Vaga" />
+                            <input type="file" class="form-control" placeholder="Imagem da Vaga" accept="image/*" @change="handleImage" id="image"/>
                         </div>
                         <div class="mb-3">
                             <label for="field" class="form-label">Campo de Pesquisa</label>

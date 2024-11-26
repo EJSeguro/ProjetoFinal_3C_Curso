@@ -1,6 +1,7 @@
 <script setup>
-import { ref, watch } from "vue";
-import VacancyModal from "./VacancyModal.vue";
+import { onMounted, ref } from "vue";
+import CreateEditVacancyModal from "./CreateEditVacancyModal.vue";
+import { getImage } from "@/services/HttpService"; 
 
 const props = defineProps({
   vacancy: {
@@ -8,30 +9,57 @@ const props = defineProps({
   }
 });
 
+const imageUrl = ref(null);
+
 const localVacancy = ref({ ...props.vacancy });
 
-function updateVacancy(updatedVacancy) {
+async function updateVacancy(updatedVacancy) {
   localVacancy.value = updatedVacancy;
+  if (updatedVacancy.imageUpdate) {
+
+    await getImageUrl();
+  }
 }
+
+async function getImageUrl() {
+    const { data } = await getImage("vacancy", localVacancy.value.id);
+    imageUrl.value = data.url;
+}
+
+onMounted(async () => {
+  if(localVacancy.value.image) {
+    await getImageUrl();
+  }
+});
 
 </script>
 
 <template>
   <div class="card">
-    <img :src="localVacancy.image" />
+    <img v-if="localVacancy.image" :src="imageUrl" />
+    <img v-else src="../assets/vacancy.webp" />
     <div class="cardInfos">
       <h3>{{ localVacancy.title }}</h3>
-      <p v-if=" localVacancy.category === 'presencial'">Presencial</p>
-      <p v-if=" localVacancy.category === 'homeoffice'">Home Office</p>
-      <p v-if=" localVacancy.category === 'hybrid'">Híbrido</p> 
+      <p v-if="localVacancy.category === 'presencial'">Presencial</p>
+      <p v-if="localVacancy.category === 'homeoffice'">Home Office</p>
+      <p v-if="localVacancy.category === 'hybrid'">Híbrido</p>
       <p>{{ localVacancy.location }}</p>
       <p>{{ localVacancy.description }}</p>
       <div>
-      <VacancyModal :initialTitle="props.vacancy.title" :initialDescription="props.vacancy.description"
-        :initialCategory="props.vacancy.category" :initializeImage="props.vacancy.image"
-        :initialField="props.vacancy.field" :initialLocation="props.vacancy.location"
-        :initialActive="props.vacancy.active" :id="props.vacancy.id" :updateVacancy="updateVacancy" isEdit="true" />
-        <font-awesome-icon class="trashCan" icon="fa-solid fa-trash-can" />
+        <CreateEditVacancyModal :initialTitle="props.vacancy.title" :initialDescription="props.vacancy.description"
+          :initialCategory="props.vacancy.category" :initialField="props.vacancy.field"
+          :initialLocation="props.vacancy.location" :initialActive="props.vacancy.active" :id="props.vacancy.id"
+          :updateVacancy="updateVacancy" isEdit="true" />
+
+        <font-awesome-icon data-bs-toggle="dropdown" class="trashCan" icon="fa-solid fa-trash-can" />
+
+        <div class="dropdown">
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item">Apagar</a></li>
+            <li><a class="dropdown-item">Cancelar</a></li>
+          </ul>
+        </div>
+
       </div>
     </div>
   </div>
@@ -39,7 +67,6 @@ function updateVacancy(updatedVacancy) {
 </template>
 
 <style scoped>
-
 .card {
   padding: 16px;
   border-radius: 8px;
@@ -78,7 +105,7 @@ function updateVacancy(updatedVacancy) {
 .trashCan {
   position: absolute;
   right: 20px;
-  bottom:40px;
+  bottom: 40px;
   color: red;
   font-size: 25px;
   cursor: pointer;
