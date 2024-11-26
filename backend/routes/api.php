@@ -4,6 +4,7 @@ use App\Http\Controllers\AcademicBackgroundController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExperienceController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VacancyController;
 use Illuminate\Support\Facades\Route;
@@ -56,4 +57,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/vacancies', [VacancyController::class, 'index']);
     Route::get('/vacancy/{id}', [VacancyController::class, 'show']);
+
+    Route::post('/uploadImage', [ImageController::class, 'upload']);
+    Route::get('/images/{type}/{id}', [ImageController::class, 'getImage']);
 });

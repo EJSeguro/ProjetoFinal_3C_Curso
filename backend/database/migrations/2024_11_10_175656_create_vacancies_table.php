@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('field');
             $table->enum('category', [Vacancy::PRESENCIAL_CATEGORY, Vacancy::HOMEOFFICE_CATEGORY, Vacancy::HYBRID_CATEGORY]);
             $table->string('location');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->boolean('active');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
         });
