@@ -5,7 +5,6 @@ import VacancyModal from "./VacancyModal.vue";
 const props = defineProps({
   vacancy: {
     type: Object,
-    required: true
   }
 });
 
@@ -22,7 +21,9 @@ function updateVacancy(updatedVacancy) {
     <img :src="localVacancy.image" />
     <div class="cardInfos">
       <h3>{{ localVacancy.title }}</h3>
-      <p>{{ localVacancy.category }}</p>
+      <p v-if=" localVacancy.category === 'presencial'">Presencial</p>
+      <p v-if=" localVacancy.category === 'homeoffice'">Home Office</p>
+      <p v-if=" localVacancy.category === 'hybrid'">Híbrido</p> 
       <p>{{ localVacancy.location }}</p>
       <p>{{ localVacancy.description }}</p>
       <div>

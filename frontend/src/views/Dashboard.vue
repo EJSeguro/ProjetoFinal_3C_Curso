@@ -7,15 +7,7 @@ import VacancieCard from "@/components/RecruiterVacancieCard.vue";
   <main class="mainContainer">
     <h1 class="nameContainer">Vagas Disponíveis</h1>
     <div class="vacanciesContainer">
-      <VacancieCard />
-      <VacancieCard />
-      <VacancieCard />
-      <VacancieCard />
-      <VacancieCard />
-      <VacancieCard />
-      <VacancieCard />
-      <VacancieCard />
-      <VacancieCard />
+
     </div>
   </main>
 </template>
