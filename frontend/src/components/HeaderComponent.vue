@@ -1,7 +1,23 @@
 <script setup>
 import { useAuthStore } from '@/stores/authStore';
+import { computed } from 'vue';
 
 const authStore = useAuthStore();
+
+
+function changeColor() {
+  const root = document.documentElement;
+if (!authStore.isRecruiter) {
+  root.style.setProperty('--backgroundColor', getComputedStyle(root).getPropertyValue('--roxo').trim());
+} else {
+  root.style.setProperty('--backgroundColor', getComputedStyle(root).getPropertyValue('--azul').trim());
+}
+}
+
+function changeRole(){
+  authStore.changeUserRole();
+  changeColor();
+}
 
 </script>
 
@@ -47,8 +63,8 @@ const authStore = useAuthStore();
           </button>
 
           <ul class="dropdown-menu">
-            <li v-if="!authStore.isRecruiter"><a class="dropdown-item" @click="authStore.changeUserRole">Trocar para recrutador</a></li>
-            <li v-if="authStore.isRecruiter"><a class="dropdown-item"  @click="authStore.changeUserRole">Trocar para candidato</a></li>
+            <li v-if="!authStore.isRecruiter"><a class="dropdown-item" @click="changeRole">Trocar para recrutador</a></li>
+            <li v-if="authStore.isRecruiter"><a class="dropdown-item"  @click="changeRole">Trocar para candidato</a></li>
             <li><a class="dropdown-item" @click="authStore.userLogout">Logout</a></li>
           </ul>
         </div>
@@ -87,11 +103,11 @@ navbar {
 
 .navLinks button:hover {
   transition: 0.2s;
-  color: var(--roxo);
+  color: var(--backgroundColor);
 }
 
 .navLinks button:hover .iconsNavLink {
-  color: var(--roxo);
+  color: var(--backgroundColor);
 }
 
 .navLinks button {
@@ -121,20 +137,20 @@ navbar {
 }
 
 .router-link-active {
-  color: var(--roxo);
+  color: var(--backgroundColor);
   font-weight: bold;
 }
 
 .router-link-active .iconsNavLink {
-  color: var(--roxo);
+  color: var(--backgroundColor);
 }
 
 button .router-link-active {
-  color: var(--roxo);
+  color: var(--backgroundColor);
 }
 
 button .router-link-active .iconsNavLink {
-  color: var(--roxo);
+  color: var(--backgroundColor);
 }
 
 .dropdown-item {

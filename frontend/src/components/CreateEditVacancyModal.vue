@@ -142,8 +142,8 @@ const uploadVacancyImage = async (vacancyId) => {
                             <input type="file" class="form-control" placeholder="Imagem da Vaga" accept="image/*" @change="handleImage" id="image"/>
                         </div>
                         <div class="mb-3">
-                            <label for="field" class="form-label">Campo de Pesquisa</label>
-                            <input type="text" class="form-control" v-model="field" placeholder="Campo de Pesquisa" />
+                            <label for="field" class="form-label">Área de atuação</label>
+                            <input type="text" class="form-control" v-model="field" placeholder="Área de atuação" />
                         </div>
                         <div class="mb-3">
                             <label for="location" class="form-label">Local da Vaga</label>

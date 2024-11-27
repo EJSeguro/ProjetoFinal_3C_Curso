@@ -1,42 +1,60 @@
 <script setup>
 
+import { getAllApplications, getVacancies } from '@/services/HttpService';
+import { useAuthStore } from '@/stores/authStore';
+import { onMounted, ref } from 'vue';
+
+const authStore = useAuthStore();
+
+const vacancies = ref([]);
+
+async function dashboardInfos() {
+  vacancies.value = [];
+
+  if (authStore.isRecruiter) {
+    const response = await getAllApplications();
+    if (response.status === 200) {
+      vacancies.value = response.data;
+    }
+  if(!authStore.isRecruiter){
+      const response = await getVacancies();
+      if (response.status === 200) {
+      vacancies.value = response.data;
+    }
+    }
+}
+}
+
+onMounted(() => {
+getVacancies();
+});
+
+
 </script>
 
 <template>
-  <main class="mainContainer">
-    <h1 class="nameContainer">Vagas Disponíveis</h1>
-    <div class="vacanciesContainer">
+  <main :class="[!authStore.isRecruiter ? 'candidateContainer' : 'recruiterContainer']">
+    <div v-if = "!authStore.isRecruiter" class="candidateContainer">
       
+    </div>
+
+    <div v-if = "authStore.isRecruiter" class="recruiterContainer">
+
     </div>
   </main>
 </template>
 
 <style scoped>
-.mainContainer {
-  background-color: rgb(134, 156, 255);
-  display: flex;
-  flex-direction: column;
+
+main{
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
+}
+.candidateContainer{
+  background-color: var(--azul);
 }
 
-.nameContainer {
-  margin-left: 37%;
-  border-radius: 10px;
-  border: 2px solid var(--roxo);
-  width: 380px;
-  padding: 1%;
-  margin-top: 10px;
-  background-color: white;
-  white-space: nowrap;
-}
-
-.vacanciesContainer {
-  display: grid;
-  margin: 2% 2% 2% 2%;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
-  grid-template-columns: 1fr 1fr 1fr;
+.recruiterContainer{
+  background-color: var(--roxo);
 }
 </style>

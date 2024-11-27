@@ -1,12 +1,16 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import CreateEditVacancyModal from "./CreateEditVacancyModal.vue";
-import { getImage } from "@/services/HttpService"; 
+import { deleteVacancy, getImage } from "@/services/HttpService"; 
 
 const props = defineProps({
   vacancy: {
     type: Object,
-  }
+  },
+  deleteVacancy: {
+    type: Function,
+    required: true,
+  },
 });
 
 const imageUrl = ref(null);
@@ -16,13 +20,13 @@ const localVacancy = ref({ ...props.vacancy });
 async function updateVacancy(updatedVacancy) {
   localVacancy.value = updatedVacancy;
   if (updatedVacancy.imageUpdate) {
-
     await getImageUrl();
   }
 }
 
 async function getImageUrl() {
     const { data } = await getImage("vacancy", localVacancy.value.id);
+    imageUrl.value = null;
     imageUrl.value = data.url;
 }
 
@@ -32,6 +36,13 @@ onMounted(async () => {
   }
 });
 
+async function deleteVacancyRecruiter() {
+  const response = await deleteVacancy(localVacancy.value.id);
+
+  if (response.status === 200) {
+    props.deleteVacancy(localVacancy.value.id);
+  }
+}
 </script>
 
 <template>
@@ -43,8 +54,8 @@ onMounted(async () => {
       <p v-if="localVacancy.category === 'presencial'">Presencial</p>
       <p v-if="localVacancy.category === 'homeoffice'">Home Office</p>
       <p v-if="localVacancy.category === 'hybrid'">Híbrido</p>
+      <p>{{ localVacancy.field }}</p>
       <p>{{ localVacancy.location }}</p>
-      <p>{{ localVacancy.description }}</p>
       <div>
         <CreateEditVacancyModal :initialTitle="props.vacancy.title" :initialDescription="props.vacancy.description"
           :initialCategory="props.vacancy.category" :initialField="props.vacancy.field"
@@ -55,7 +66,7 @@ onMounted(async () => {
 
         <div class="dropdown">
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item">Apagar</a></li>
+            <li><a class="dropdown-item" @click="deleteVacancyRecruiter()">Apagar</a></li>
             <li><a class="dropdown-item">Cancelar</a></li>
           </ul>
         </div>
@@ -108,6 +119,10 @@ onMounted(async () => {
   bottom: 40px;
   color: red;
   font-size: 25px;
+  cursor: pointer;
+}
+
+.dropdown-item{
   cursor: pointer;
 }
 </style>

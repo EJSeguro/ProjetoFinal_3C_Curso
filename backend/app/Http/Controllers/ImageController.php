@@ -21,7 +21,7 @@ class ImageController extends Controller
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $filename = $user->id . '.' . $file->getClientOriginalExtension();
+            $filename = $user->id . '_' . now()->timestamp . '.' . $file->getClientOriginalExtension();
 
             switch ($validated['type']) {
                 case 'profile':
@@ -43,8 +43,8 @@ class ImageController extends Controller
                         if (!$vacancy) {
                             return response()->json(['error' => 'Invalid vacancy'], 400);
                         }
-                        $filename = $vacancy->id . '.' . $file->getClientOriginalExtension();
-                        
+                        $filename = $vacancy->id . '_' . now()->timestamp . '.' . $file->getClientOriginalExtension();
+
                         $path = $file->storeAs('uploads/vacancy', $filename, 'public');
                         $vacancy->image = $path;
                         $vacancy->save();

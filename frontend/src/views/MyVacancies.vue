@@ -8,6 +8,10 @@ import { getCandidateApplications, getRecruiterVacancies } from '@/services/Http
 const authStore = useAuthStore();
 const vacancies = ref([]);
 
+function deleteVacancy(id) {
+  vacancies.value = vacancies.value.filter(vacancy => vacancy.id !== id);
+}
+
 async function getVacancies() {
   vacancies.value = [];
 
@@ -55,14 +59,14 @@ watch(
   </div>
 
     <div class="vacanciesContainer">
-      <RecruiterVacancieCard v-for="vacancy in vacancies" :key="vacancy.id" :vacancy="vacancy" />
+      <RecruiterVacancieCard v-for="vacancy in vacancies" :key="vacancy.id" :vacancy="vacancy" :deleteVacancy="deleteVacancy" />
     </div>
   </main>
 </template>
 
 <style scoped>
 .mainContainer {
-  background-color: rgb(134, 156, 255);
+  background-color: var(--azul);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
