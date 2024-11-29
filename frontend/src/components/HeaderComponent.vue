@@ -1,22 +1,24 @@
 <script setup>
 import { useAuthStore } from '@/stores/authStore';
-import { computed } from 'vue';
 
 const authStore = useAuthStore();
 
 
-function changeColor() {
+async function changeColor() {
   const root = document.documentElement;
-if (!authStore.isRecruiter) {
-  root.style.setProperty('--backgroundColor', getComputedStyle(root).getPropertyValue('--roxo').trim());
-} else {
-  root.style.setProperty('--backgroundColor', getComputedStyle(root).getPropertyValue('--azul').trim());
-}
+
+  if (!authStore.isRecruiter) {
+    const roxo = getComputedStyle(root).getPropertyValue('--roxo').trim();
+    root.style.setProperty('--backgroundColor', roxo);
+  } else {
+    const azul = getComputedStyle(root).getPropertyValue('--azul').trim();
+    root.style.setProperty('--backgroundColor', azul);
+  }
 }
 
-function changeRole(){
-  authStore.changeUserRole();
-  changeColor();
+async function changeRole() {
+  await authStore.changeUserRole();
+  await changeColor();
 }
 
 </script>

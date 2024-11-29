@@ -71,15 +71,15 @@ class ImageController extends Controller
 
         switch ($type) {
             case 'profile':
-                $imagePath = $user->id === (int) $id ? $user->profileImg : null;
+                $imagePath =  $user->profileImg;
                 break;
 
             case 'cover':
-                $imagePath = $user->id === (int) $id ? $user->backgroundProfileImg : null;
+                $imagePath =  $user->backgroundProfileImg;
                 break;
 
             case 'vacancy':
-                $vacancy = Vacancy::where('user_id', $user->id)->where('id', $id)->first();
+                $vacancy = Vacancy::where('id', $id)->first();
                 $imagePath = $vacancy ? $vacancy->image : null;
                 break;
 
@@ -95,5 +95,4 @@ class ImageController extends Controller
         return response()->json(['url' => $imageUrl], 200);
         // return response()->file(storage_path('app/public/' . $imagePath));
     }
-
 }

@@ -26,7 +26,6 @@ async function updateVacancy(updatedVacancy) {
 
 async function getImageUrl() {
     const { data } = await getImage("vacancy", localVacancy.value.id);
-    imageUrl.value = null;
     imageUrl.value = data.url;
 }
 
@@ -110,7 +109,7 @@ async function deleteVacancyRecruiter() {
 
 .card img {
   height: 100%;
-  width: 150px;
+  width: 180px;
 }
 
 .trashCan {

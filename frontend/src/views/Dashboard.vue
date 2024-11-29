@@ -1,5 +1,6 @@
 <script setup>
 
+import CandidateVacancieCard from '@/components/CandidateVacancieCard.vue';
 import { getAllApplications, getVacancies } from '@/services/HttpService';
 import { useAuthStore } from '@/stores/authStore';
 import { onMounted, ref } from 'vue';
@@ -16,17 +17,17 @@ async function dashboardInfos() {
     if (response.status === 200) {
       vacancies.value = response.data;
     }
-  if(!authStore.isRecruiter){
-      const response = await getVacancies();
-      if (response.status === 200) {
+  }
+  else {
+    const response = await getVacancies();
+    if (response.status === 200) {
       vacancies.value = response.data;
     }
-    }
-}
+  }
 }
 
 onMounted(() => {
-getVacancies();
+  dashboardInfos();
 });
 
 
@@ -34,27 +35,36 @@ getVacancies();
 
 <template>
   <main :class="[!authStore.isRecruiter ? 'candidateContainer' : 'recruiterContainer']">
-    <div v-if = "!authStore.isRecruiter" class="candidateContainer">
-      
+    <div v-if="!authStore.isRecruiter" class="candidateContainer">
+      <div class="vacancies">
+      <CandidateVacancieCard v-for="vacancy in vacancies" :key="vacancy.id" :vacancy="vacancy" />
+    </div>
     </div>
 
-    <div v-if = "authStore.isRecruiter" class="recruiterContainer">
+    <div v-if="authStore.isRecruiter" class="recruiterContainer">
 
     </div>
   </main>
 </template>
 
 <style scoped>
-
-main{
+main {
   width: 100%;
   height: 100vh;
 }
-.candidateContainer{
+
+.candidateContainer {
   background-color: var(--azul);
 }
 
-.recruiterContainer{
+.recruiterContainer {
   background-color: var(--roxo);
+}
+
+.vacancies {
+display: flex;flex-direction: column;
+justify-content: center;
+align-items: center;
+padding-top: 100px;
 }
 </style>

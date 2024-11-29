@@ -1,6 +1,7 @@
 <script setup>
 import RecruiterVacancieCard from '@/components/RecruiterVacancieCard.vue';
 import CreateEditVacancyModal from '@/components/CreateEditVacancyModal.vue';
+import CandidateVacancieCard from '@/components/CandidateVacancieCard.vue';
 import { useAuthStore } from '@/stores/authStore';
 import { onMounted, ref, watch } from 'vue';
 import { getCandidateApplications, getRecruiterVacancies } from '@/services/HttpService';
@@ -58,7 +59,11 @@ watch(
     <CreateEditVacancyModal v-if="authStore.isRecruiter" :addVacancy="addVacancy" />
   </div>
 
-    <div class="vacanciesContainer">
+    <div v-if="!authStore.isRecruiter" class="vacanciesContainer">
+      <CandidateVacancieCard v-for="vacancy in vacancies" :key="vacancy.id" :vacancy="vacancy" />
+    </div>
+
+    <div v-else class="vacanciesContainer">
       <RecruiterVacancieCard v-for="vacancy in vacancies" :key="vacancy.id" :vacancy="vacancy" :deleteVacancy="deleteVacancy" />
     </div>
   </main>
