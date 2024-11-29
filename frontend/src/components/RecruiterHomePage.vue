@@ -1,24 +1,12 @@
 <script setup>
-import { onMounted, ref } from 'vue';
-import { getAllApplications, getApplicationsFromVacancy, getRecruiterVacancies } from '@/services/HttpService';
+import { onMounted } from 'vue';
 import RecruiterViewApplicationsCard from './RecruiterViewApplicationsCard.vue';
+import { useVacancyStore } from '@/stores/vacancyStore';
 
-const allApplications = ref([]);
-const vacancies = ref([]);
+const vacancieStore = useVacancyStore();
 
 async function pageInfos() {
-    allApplications.value = [];
-    vacancies.value = [];
-
-    const responseAllapplications = await getAllApplications();
-    if (responseAllapplications.status === 200) {
-        allApplications.value = responseAllapplications.data;
-    }
-
-    const responseVacancies= await getRecruiterVacancies();
-    if (responseVacancies.status === 200) {
-        vacancies.value = responseVacancies.data;
-    }
+   vacancieStore.getRecruiterVacancies();
 }
 
 onMounted(() => {
@@ -30,7 +18,7 @@ onMounted(() => {
     <main class="recruiterContainer">
         <div class="recruiterContainer">
             <section class="vacancies">
-                <RecruiterViewApplicationsCard v-for="vacancy in vacancies" :key="vacancy.id" :vacancy="vacancy" />
+                <RecruiterViewApplicationsCard v-for="vacancy in vacancieStore.vacancies" :key="vacancy.id" :vacancy="vacancy" />
             </section>
         </div>
         </main>

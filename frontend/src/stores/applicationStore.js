@@ -1,4 +1,4 @@
-import { deleteApplication, getCandidateApplications, storeApplication } from '@/services/HttpService';
+import { deleteApplication, getCandidateApplications, storeApplication, getAllApplications as getAllApplicationsApi, getApplicationsFromVacancy as getApplicationsFromVacancyApi } from '@/services/HttpService';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { useToast } from 'vue-toastification';
@@ -40,5 +40,19 @@ export const useApplicationStore = defineStore('applicationStore', () => {
     }
   }
 
-  return { applications, applicate, getApplications, deapplicate };
+  async function getAllApplications() {
+    const response = await getAllApplicationsApi();
+    if (response.status === 200) {
+      applications.value = response.data;
+    }
+  }
+  
+  async function getApplicationFromVacancy(id) {
+    const response = await getApplicationsFromVacancyApi(id);
+    if (response.status === 200) {
+      applications.value = response.data;
+    }
+  }
+
+  return { applications, applicate, getApplications, deapplicate, getAllApplications, getApplicationFromVacancy };
 });

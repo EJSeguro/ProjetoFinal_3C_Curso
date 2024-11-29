@@ -12,7 +12,6 @@ const props = defineProps({
     initialCategory: "",
     initialField: "",
     initialLocation: "",
-    initialActive: "",
     initialCompany: "",
     isEdit: false,
     id: null,
@@ -25,7 +24,6 @@ const category = ref(props.initialCategory);
 const field = ref(props.initialField);
 const company = ref(props.initialCompany);
 const location = ref(props.initialLocation);
-const active = ref(props.initialActive);
 const modalId = computed(() => (props.id ? `modalEdit-${props.id}` : "newVacancyModal"));
 
 const image = ref(null);
@@ -38,7 +36,6 @@ const resetForm = () => {
         field.value = "";
         company.value = "";
         location.value = "";
-        active.value = false;
     }
 };
 
@@ -58,7 +55,6 @@ const storeUpdateVacancy = async () => {
         category: category.value,
         field: field.value,
         location: location.value,
-        active: active.value,
         company: company.value,
     };
 
@@ -127,21 +123,21 @@ const uploadVacancyImage = async (vacancyId) => {
                     <form @submit.prevent="storeUpdateVacancy">
                         <div class="mb-3">
                             <label for="title" class="form-label">Título da Vaga</label>
-                            <input type="text" class="form-control" v-model="title" placeholder="Título da Vaga" />
+                            <input type="text" class="form-control" v-model="title" placeholder="Título da Vaga" required/>
                         </div>
                         <div class="mb-3">
                             <label for="description" class="form-label">Descrição da Vaga</label>
                             <textarea class="form-control" v-model="description" rows="3"
-                                placeholder="Descrição da Vaga"></textarea>
+                                placeholder="Descrição da Vaga" required></textarea>
                         </div>
                         <div class="mb-3"> 
                             <label for="company" class="form-label">Empresa</label>
-                            <input type="text" class="form-control" v-model="company" placeholder="Empresa" />
+                            <input type="text" class="form-control" v-model="company" placeholder="Empresa" required/>
                         </div>
                         <div class="mb-3">
                             <label for="category" class="form-label">Categoria da Vaga</label>
                             <select class="form-select" v-model="category"
-                                placeholder="Categoria da Vaga">
+                                placeholder="Categoria da Vaga" required>
                                 <option value="presencial">Presencial</option>
                                 <option value="homeoffice">Home Office</option>
                                 <option value="hybrid">Híbrido</option>
@@ -153,15 +149,11 @@ const uploadVacancyImage = async (vacancyId) => {
                         </div>
                         <div class="mb-3">
                             <label for="field" class="form-label">Área de atuação</label>
-                            <input type="text" class="form-control" v-model="field" placeholder="Área de atuação" />
+                            <input type="text" class="form-control" v-model="field" placeholder="Área de atuação" required/>
                         </div>
                         <div class="mb-3">
                             <label for="location" class="form-label">Local da Vaga</label>
-                            <input type="text" class="form-control" v-model="location" placeholder="Local da Vaga" />
-                        </div>
-                        <div class="form-check mb-3">
-                            <input type="checkbox" checkedclass="form-check-input" v-model="active" />
-                            <label class="form-check-label">Ativo</label>
+                            <input type="text" class="form-control" v-model="location" placeholder="Local da Vaga" required/>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Salvar Vaga</button>
                     </form>

@@ -17,12 +17,6 @@ const vacancySelected = ref(null);
             <div class="allVacancies">
                 <div class="title">
                     <h1>Vagas Disponíveis</h1>
-                    <button class="filterButton">
-                        <p>
-                            Filtro
-                        </p>
-                        <font-awesome-icon icon="fa-solid fa-filter" />
-                    </button>
                 </div>
                 <div class="vacanciesDescription">
                     <div class="vacancies">
@@ -72,25 +66,6 @@ main {
     height: 100%;
 }
 
-.filterButton {
-    display: flex;
-    color: white;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--roxo);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    height: 40px;
-    width: 100px;
-    gap: 10px;
-    font-weight: 550;
-}
-
-.filterButton p {
-    margin: 0;
-}
-
 .title {
     display: flex;
     align-items: center;
@@ -102,7 +77,6 @@ main {
     border: rgba(128, 128, 128, 0.295) 2px solid;
     box-shadow: inset 0 10px 12px rgba(0, 0, 0, 0.1);
 }
-
 
 .vacanciesDescription {
     display: flex;
