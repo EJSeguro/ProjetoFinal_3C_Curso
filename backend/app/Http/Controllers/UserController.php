@@ -11,7 +11,7 @@ class UserController extends Controller
 
     public function show(int $id)
     {
-        $user = User::findOrFail($id);
+        $user = User::where('id', $id)->with('vacancies', 'applications')->first();
         return response()->json($user);
     }
 

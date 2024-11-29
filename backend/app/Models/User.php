@@ -56,8 +56,8 @@ class User extends Authenticatable
         ];
     }
 
-    public function vaccacions(){
-        return $this->hasMany(Vaccacion::class);
+    public function vacancies(){
+        return $this->hasMany(Vacancy::class);
     }
 
     public function applications(){
