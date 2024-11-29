@@ -5,9 +5,9 @@ import { ref } from 'vue';
 export const useApplicationStore = defineStore('applicationStore', () => {
   const applications = ref([]);
 
-  async function applicate(application) {
+  async function applicate(id) {
     try {
-      const response = await storeApplication(application);
+      const response = await storeApplication({ vacancy_id: id });
       if (response.status === 200) {
         alert('Você se candidatou com sucesso!');
       }

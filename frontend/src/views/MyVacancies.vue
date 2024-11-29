@@ -14,7 +14,7 @@ const vacancyStore = useVacancyStore();
 
 async function getVacanciesAndApplications() {
   if (authStore.isRecruiter) {
-   vacancyStore.getVacancies();
+   vacancyStore.getRecruiterVacancies();
   }
   else {
     applicationStore.getApplications();

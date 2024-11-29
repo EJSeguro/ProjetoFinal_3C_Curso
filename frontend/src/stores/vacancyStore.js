@@ -1,12 +1,19 @@
-import { getRecruiterVacancies } from '@/services/HttpService';
+import { getRecruiterVacancies as getRecruiterVacanciesApi, getVacancies } from '@/services/HttpService';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 export const useVacancyStore = defineStore('vacancyStore', () => {
   const vacancies = ref([]);
 
-  async function getVacancies() {
-    const response = await getRecruiterVacancies();
+  async function getRecruiterVacancies() {
+    const response = await getRecruiterVacanciesApi();
+    if (response.status === 200) {
+      vacancies.value = response.data;
+    }
+  }
+
+  async function getAllVacancies() {
+    const response = await getVacancies();
     if (response.status === 200) {
       vacancies.value = response.data;
     }
@@ -20,5 +27,5 @@ export const useVacancyStore = defineStore('vacancyStore', () => {
     vacancies.value = vacancies.value.filter(vacancy => vacancy.id !== id);
   }
 
-  return { vacancies, getVacancies, addVacancy, deleteVacancy };
+  return { vacancies, getRecruiterVacancies, getAllVacancies, addVacancy, deleteVacancy };
 });

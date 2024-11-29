@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import { getAllApplications, getApplicationsFromVacancy, getRecruiterVacancies, getRecruiterVacancies } from '@/services/HttpService';
+import { getAllApplications, getApplicationsFromVacancy, getRecruiterVacancies } from '@/services/HttpService';
 
 const allApplications = ref([]);
 const vacancies = ref([]);

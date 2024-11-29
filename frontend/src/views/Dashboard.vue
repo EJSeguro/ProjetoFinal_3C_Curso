@@ -1,44 +1,28 @@
 <script setup>
-
 import CandidateHomePage from '@/components/CandidateHomePage.vue';
-import CandidateVacancieCard from '@/components/CandidateVacancieCard.vue'; 
-import { getAllApplications, getVacancies } from '@/services/HttpService';
+import RecruiterHomePage from '@/components/RecruiterHomePage.vue';
 import { useAuthStore } from '@/stores/authStore';
-import { onMounted, ref } from 'vue';
+import { useVacancyStore } from '@/stores/vacancyStore';
+import { onMounted } from 'vue';
 
 const authStore = useAuthStore();
-
-const vacancies = ref([]);
+const vacancyStore = useVacancyStore();
 
 async function dashboardInfos() {
-  vacancies.value = [];
-
   if (authStore.isRecruiter) {
-    const response = await getAllApplications();
-    if (response.status === 200) {
-      vacancies.value = response.data;
-    }
+
   }
   else {
-    const response = await getVacancies();
-    if (response.status === 200) {
-      vacancies.value = response.data;
-    }
+    vacancyStore.getAllVacancies();
   }
 }
 
 onMounted(() => {
   dashboardInfos();
 });
-
-
 </script>
 
 <template>
     <CandidateHomePage v-if="!authStore.isRecruiter" />
     <RecruiterHomePage v-else />
 </template>
-
-<style scoped>
-
-</style>
