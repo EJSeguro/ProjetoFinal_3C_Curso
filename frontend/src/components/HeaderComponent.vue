@@ -30,10 +30,16 @@ async function changeRole() {
         <img src="../../public/favicon.ico" />
       </div>
       <div class="navLinks">
-        <button>
+        <button v-if="!authStore.isRecruiter">
           <RouterLink to="/dashboard" class="noUnderline">
             <font-awesome-icon class="iconsNavLink" icon="house" />
             <li>Início</li>
+          </RouterLink>
+        </button>
+        <button v-if="authStore.isRecruiter">
+          <RouterLink to="/dashboard" class="noUnderline">
+            <font-awesome-icon class="iconsNavLink" icon="fa-solid fa-eye" />
+            <li>Candidaturas</li>
           </RouterLink>
         </button>
 

@@ -20,5 +20,6 @@ const authStore = useAuthStore();
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: var(--fonte1);
 }
 </style>
