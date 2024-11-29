@@ -27,7 +27,7 @@ class ExperienceController extends Controller
             'description' => 'nullable|string',
             'company' => 'required|string',
             'start_date' => 'required|date',
-            'end_date' => 'sometimes|date',
+            'end_date' => 'nullable|date',
         ]);
 
         $validated['user_id'] = Auth::user()->id;
@@ -52,7 +52,7 @@ class ExperienceController extends Controller
             'description' => 'nullable|string',
             'company' => 'sometimes|string',
             'start_date' => 'sometimes|date',
-            'end_date' => 'sometimes|date',
+            'end_date' => 'nullable|date',
         ]);
 
         $experience->update($validated);

@@ -22,7 +22,7 @@ class AcademicBackgroundController extends Controller
             'description' => 'nullable|string',
             'institution' => 'required|string',
             'start_date' => 'required|date',
-            'end_date' => 'sometimes|date',
+            'end_date' => 'nullable|date',
         ]);
 
         $validated['user_id'] = Auth::user()->id;
@@ -44,7 +44,7 @@ class AcademicBackgroundController extends Controller
             'description' => 'nullable|string',
             'institution' => 'sometimes|string',
             'start_date' => 'sometimes|date',
-            'end_date' => 'sometimes|date',
+            'end_date' => 'nullable|date',
         ]);
 
         $academicBackground->update($validated);

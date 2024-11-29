@@ -1,7 +1,9 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { getImage } from "@/services/HttpService";
+import { useApplicationStore } from "@/stores/applicationStore";
 
+const applicationStore = useApplicationStore();
 
 const props = defineProps({
     vacancy: {
@@ -22,8 +24,6 @@ onMounted(async () => {
     }
 });
 
-const modal = ref(false);
-
 </script>
 
 <template>
@@ -32,29 +32,56 @@ const modal = ref(false);
         <img v-else src="../assets/vacancy.webp" />
         <div class="cardInfos">
             <div>
-            <h3>{{ props.vacancy.title }}</h3>
-            <p>{{ props.vacancy.location }}</p>
-            <p>
-                {{ props.vacancy.field }} |
-                <span v-if="props.vacancy.category === 'presencial'">Presencial</span>
-                <span v-else-if="props.vacancy.category === 'homeoffice'">Home Office</span>
-                <span v-else-if="props.vacancy.category === 'hybrid'">Híbrido</span>
-            </p>
+                <h3>{{ props.vacancy.title }}</h3>
+                <p>{{ props.vacancy.location }}</p>
+                <p>
+                    {{ props.vacancy.field }} |
+                    <span v-if="props.vacancy.category === 'presencial'">Presencial</span>
+                    <span v-else-if="props.vacancy.category === 'homeoffice'">Home Office</span>
+                    <span v-else-if="props.vacancy.category === 'hybrid'">Híbrido</span>
+                </p>
             </div>
             <div class="buttonView">
-                <button @click="modal = true">Visualizar Candidaturas</button>
+                <button type="button" class="btn btn-primary" :data-bs-toggle="'modal'"
+                    :data-bs-target="'#applicationModal' + props.vacancy.id" @click="applicationStore.getApplicationFromVacancy(props.vacancy.id)">
+                    Candidaturas
+                </button>
             </div>
-            
         </div>
     </div>
-    <div v-if="modal" class="modal">
-        <div class="modalContent">
-            <h3>{{ props.title }}</h3>
-            <button @click="modal = false">Fechar</button>
-        </div>
-        <div class="modalContent">
-            <h3>Descrição</h3>
-            <p>{{ props.description }}</p>
+
+    <div class="modal fade" :id="'applicationModal' + props.vacancy.id" tabindex="-1"
+        aria-labelledby="'applicationModalLabel' + props.vacancy.id" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" :id="'applicationModalLabel' + props.vacancy.id">
+                        {{ props.vacancy.title }}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h3>Descrição</h3>
+                    <p>{{ props.vacancy.description }}</p>
+                    <hr />
+                    <div v-if="applicationStore.applications.length > 0">
+                        <h4>Candidaturas</h4>
+                        <ul >
+                            <li v-for="application in applicationStore.applications" :key="application.id">
+                                {{ application.user.name }} 
+                            </li>
+                        </ul>
+                    </div>
+                    <div v-else>
+                        Sem candidaturas
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Fechar
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -75,7 +102,7 @@ const modal = ref(false);
     overflow: hidden;
 }
 
-.card img{
+.card img {
     max-width: 150px;
     min-width: 150px;
     height: 100%;
@@ -91,13 +118,13 @@ const modal = ref(false);
     flex-wrap: nowrap;
 }
 
-.buttonView{
+.buttonView {
     display: flex;
     justify-content: center;
     align-items: end;
 }
 
-.buttonView button{
+.buttonView button {
     background-color: var(--azul);
     color: white;
     border: none;
@@ -108,5 +135,4 @@ const modal = ref(false);
     gap: 10px;
     font-weight: 550;
 }
-
 </style>

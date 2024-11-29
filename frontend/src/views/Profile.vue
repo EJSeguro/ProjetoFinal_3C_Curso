@@ -34,7 +34,7 @@ const openModal = (type, data = null) => {
       title: "",
       institutionOrCompany: "",
       start_date: "",
-      end_date: "",
+      end_date: null,
     };
   }
 
@@ -132,7 +132,8 @@ const handleSubmit = () => {
           <div class="experienceContent">
             <h3>{{ academic.title }}</h3>
             <p>{{ academic.institution }}</p>
-            <p>{{ academic.start_date }} -> {{ academic?.end_date }}</p>
+            <p v-if="academic.end_date">{{ academic.start_date }} -> {{ academic.end_date }}</p>
+            <p v-else>{{ academic.start_date }}</p>
           </div>
           <div class="experienceActions">
             <button class="actionButton editButton" @click="openModal('academic', academic)">
@@ -165,7 +166,8 @@ const handleSubmit = () => {
           <div class="experienceContent">
             <h3>{{ professional.title }}</h3>
             <p>{{ professional.company }}</p>
-            <p>{{ professional.start_date }} -> {{ professional?.end_date }}</p>
+            <p v-if="professional.end_date">{{ professional.start_date }} -> {{ professional.end_date }}</p>
+            <p v-else>{{ professional.start_date }}</p>
           </div>
           <div class="experienceActions">
             <button class="actionButton editButton" @click="openModal('professional', professional)">

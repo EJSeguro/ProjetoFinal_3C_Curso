@@ -27,5 +27,5 @@ export const useVacancyStore = defineStore('vacancyStore', () => {
     vacancies.value = vacancies.value.filter(vacancy => vacancy.id !== id);
   }
 
-  return { vacancies, getRecruiterVacancies, getAllVacancies, addVacancy, deleteVacancy };
+  return { vacancies, getRecruiterVacancies, getAllVacancies, addVacancy, deleteVacancy, getAllVacancies };
 });

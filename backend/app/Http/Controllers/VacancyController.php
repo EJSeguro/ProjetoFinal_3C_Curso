@@ -30,7 +30,6 @@ class VacancyController extends Controller
             'category' => 'required|string',
             'field' => 'required|string',
             'location' => 'required|string',
-            'active' => 'required|boolean',
             'company' => 'required|string',
         ]);
 
@@ -57,7 +56,6 @@ class VacancyController extends Controller
             'category'=> 'sometimes|string',
             'field'=> 'sometimes|string',
             'location'=> 'sometimes|string',
-            'active'=> 'sometimes|boolean',
             'company'=> 'sometimes|string',
         ]);
 
