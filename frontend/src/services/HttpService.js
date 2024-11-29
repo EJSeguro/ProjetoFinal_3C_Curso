@@ -55,35 +55,35 @@ export const getCandidateApplications = async () => {
 };
 
 export const storeAcademicBackground = async (data) => {
-    return await httpService.post('candidate/academicBackground', data, { headers: authHeader() });
+    return await httpService.post('academicBackground', data, { headers: authHeader() });
 };
 
 export const updateAcademicBackground = async (id, data) => {
-    return await httpService.put(`candidate/academicBackground/${id}`, data, { headers: authHeader() });
+    return await httpService.put(`academicBackground/${id}`, data, { headers: authHeader() });
 };
 
 export const deleteAcademicBackground = async (id) => {
-    return await httpService.delete(`candidate/academicBackground/${id}`, { headers: authHeader() });
+    return await httpService.delete(`academicBackground/${id}`, { headers: authHeader() });
 };
 
 export const getAcademicBackground = async (id) => {
-    return await httpService.get(`candidate/academicBackground/${id}`, { headers: authHeader() });
+    return await httpService.get(`academicBackground/${id}`, { headers: authHeader() });
 };
 
 export const storeExperience = async (data) => {
-    return await httpService.post('candidate/experience', data, { headers: authHeader() });
+    return await httpService.post('experience', data, { headers: authHeader() });
 };
 
 export const updateExperience = async (id, data) => {
-    return await httpService.put(`candidate/experience/${id}`, data, { headers: authHeader() });
+    return await httpService.put(`experience/${id}`, data, { headers: authHeader() });
 };
 
 export const deleteExperience = async (id) => {
-    return await httpService.delete(`candidate/experience/${id}`, { headers: authHeader() });
+    return await httpService.delete(`experience/${id}`, { headers: authHeader() });
 };
 
 export const getExperience = async (id) => {
-    return await httpService.get(`candidate/experience/${id}`, { headers: authHeader() });
+    return await httpService.get(`experience/${id}`, { headers: authHeader() });
 };
 
 export const storeVacancy = async (data) => {

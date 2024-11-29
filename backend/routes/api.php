@@ -18,18 +18,6 @@ Route::middleware(['auth:sanctum', 'role:candidate'])->group(function () {
         Route::post('/application', [ApplicationController::class, 'store']);
         Route::delete('/application/{id}', [ApplicationController::class, 'destroy']);
         Route::get('/applications', [ApplicationController::class, 'getCandidateApplications']);
-
-        Route::post('/academicBackground', [AcademicBackgroundController::class, 'store']);
-        Route::delete('/academicBackground/{academicBackground}', [AcademicBackgroundController::class, 'destroy']);
-        Route::put('/academicBackground/{academicBackground}', [AcademicBackgroundController::class, 'update']);
-        Route::get('/academicBackground/{id}', [AcademicBackgroundController::class, 'index']);
-        Route::get('/academicBackground/{academicBackground}', [AcademicBackgroundController::class, 'show']);
-
-        Route::post('/experience', [ExperienceController::class, 'store']);
-        Route::delete('/experience/{experience}', [ExperienceController::class, 'destroy']);
-        Route::put('/experience/{experience}', [ExperienceController::class, 'update']);
-        Route::get('/experience/{id}', [ExperienceController::class, 'index']);
-        Route::get('/experience/{experience}', [ExperienceController::class, 'show']);
     });
 });
 
@@ -50,6 +38,18 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('/profile', [UserController::class, 'update']);
     Route::get('/profile', [UserController::class, 'indexProfile']);
     Route::get('/profile/{id}', [UserController::class, 'show']);
+
+    Route::post('/academicBackground', [AcademicBackgroundController::class, 'store']);
+    Route::delete('/academicBackground/{academicBackground}', [AcademicBackgroundController::class, 'destroy']);
+    Route::put('/academicBackground/{academicBackground}', [AcademicBackgroundController::class, 'update']);
+    Route::get('/academicBackground/{id}', [AcademicBackgroundController::class, 'index']);
+    Route::get('/academicBackground/{academicBackground}', [AcademicBackgroundController::class, 'show']);
+
+    Route::post('/experience', [ExperienceController::class, 'store']);
+    Route::delete('/experience/{experience}', [ExperienceController::class, 'destroy']);
+    Route::put('/experience/{experience}', [ExperienceController::class, 'update']);
+    Route::get('/experience/{id}', [ExperienceController::class, 'index']);
+    Route::get('/experience/{experience}', [ExperienceController::class, 'show']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
 

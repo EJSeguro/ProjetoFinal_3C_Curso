@@ -1,82 +1,153 @@
 <script setup>
 import { useAuthStore } from "@/stores/authStore";
-import { ref } from "vue";
+import { useProfileStore } from "@/stores/profileStore";
+import { Modal } from "bootstrap";
+import { onMounted, ref } from "vue";
 
 const authStore = useAuthStore();
+const profileStore = useProfileStore();
 
-const academicExperience = ref([
-  { id: 1, institution: 'University A', degree: 'Bachelor of Science', field: 'Computer Science', year: '2018-2022' },
-  { id: 2, institution: 'University B', degree: 'Master of Science', field: 'Data Science', year: '2022-2024' },
-]);
+onMounted(async () => {
+  await profileStore.getAcademicBackground(authStore.user.id);
+  await profileStore.getProfessionalExperience(authStore.user.id);
+});
 
-const professionalExperience = ref([
-  { id: 1, company: 'Tech Corp', position: 'Software Developer', period: 'Jan 2022 - Present' },
-  { id: 2, company: 'Innovate Inc', position: 'Intern', period: 'Jun 2021 - Dec 2021' },
-]);
+const modalTitle = ref("");
+const modalType = ref("");
+const formData = ref({
+  title: "",
+  institutionOrCompany: "",
+  start_date: "",
+  end_date: "",
+  isEdit: false,
+});
 
-const deleteConfirmId = ref(null);
-const deleteConfirmType = ref('');
+const openModal = (type, data = null) => {
+  modalType.value = type;
+  modalTitle.value = type === "academic" ? "Editar Experiência Acadêmica" : "Editar Experiência Profissional";
 
-const confirmDelete = (type, id) => {
-  deleteConfirmId.value = id;
-  deleteConfirmType.value = type;
+  if (data) {
+    data.institutionOrCompany = data.institution ? data.institution : data.company;
+    formData.value = { ...data, isEdit: true };
+  } else {
+    formData.value = {
+      title: "",
+      institutionOrCompany: "",
+      start_date: "",
+      end_date: "",
+    };
+  }
+
+  const modal = new Modal(document.getElementById("experienceModal"));
+  modal.show();
 };
 
-const cancelDelete = () => {
-  deleteConfirmId.value = null;
-  deleteConfirmType.value = '';
+const handleSubmit = () => {
+  const modal = Modal.getInstance(document.getElementById("experienceModal"));
+
+  if (formData.value.isEdit) {
+    if (modalType.value === "academic") {
+      formData.value.institution = formData.value.institutionOrCompany;
+      profileStore.updateAcademicBackground(formData.value.id, formData.value);
+    }
+    else {
+      formData.value.company = formData.value.institutionOrCompany;
+      profileStore.updateProfessionalExperience(formData.value.id, formData.value);
+    }
+  } else {
+    if (modalType.value === "academic") {
+      formData.value.institution = formData.value.institutionOrCompany;
+      profileStore.addAcademicExperience(formData.value);
+    }
+    else {
+      formData.value.company = formData.value.institutionOrCompany;
+      profileStore.addProfessionalExperience(formData.value);
+    }
+  }
+
+  modal.hide();
 };
 
-const deleteExperience = () => {
-  const experienceList = deleteConfirmType.value === 'academic' ? academicExperience : professionalExperience;
-  experienceList.value = experienceList.value.filter(exp => exp.id !== deleteConfirmId.value);
-  cancelDelete();
-};
-
-const addExperience = (type) => {
-  console.log(`Add ${type} experience`);
-};
 </script>
 
 <template>
   <main class="mainContainer">
+    <div class="modal fade" id="experienceModal" tabindex="-1" aria-labelledby="experienceModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="experienceModalLabel">{{ modalTitle }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form @submit.prevent="handleSubmit">
+              <div class="mb-3">
+                <label for="title" class="form-label">Título</label>
+                <input type="text" id="title" v-model="formData.title" class="form-control" required />
+              </div>
+              <div class="mb-3">
+                <label for="institutionOrCompany" class="form-label">
+                  {{ modalType === 'academic' ? 'Instituição' : 'Empresa' }}
+                </label>
+                <input type="text" id="institutionOrCompany" v-model="formData.institutionOrCompany"
+                  class="form-control" required />
+              </div>
+              <div class="mb-3">
+                <label for="startDate" class="form-label">Data de Início</label>
+                <input type="date" id="startDate" v-model="formData.start_date" class="form-control" required />
+              </div>
+              <div class="mb-3">
+                <label for="endDate" class="form-label">Data de Término</label>
+                <input type="date" id="endDate" v-model="formData.end_date" class="form-control" />
+              </div>
+              <button type="submit" class="btn btn-primary">Salvar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="profileContainer">
-      <font-awesome-icon id="editIcon" icon="fa-regular fa-pen-to-square" />
+      <!-- <font-awesome-icon id="editIcon" icon="fa-regular fa-pen-to-square" /> -->
       <img class="backgroundImg" src="" />
       <div class="profile">
         <font-awesome-icon id="editProfileInfosIcon" icon="fa-solid fa-user-pen" />
         <img class="profileImg" src="../assets/profile.webp" />
         <div class="profileInfo">
           <h1 class="name">{{ authStore.user.name }}</h1>
-          <h2 class="title">Título</h2>
+          <h2 class="title">{{ authStore.user.title }}</h2>
           <h3 v-if="authStore.user.about" class="about">{{ authStore.user.about }}</h3>
         </div>
       </div>
 
       <div class="experienceSection">
         <div class="sectionHeader">
-          <h2 class="sectionTitle">Academic Experience</h2>
-          <button @click="addExperience('academic')" class="addButton">
-            <font-awesome-icon icon="fa-solid fa-plus" /> Add
+          <h2 class="sectionTitle">Experiência Acadêmica</h2>
+          <button @click="openModal('academic')" class="addButton">
+            <font-awesome-icon icon="fa-solid fa-plus" /> Adicionar
           </button>
         </div>
-        <div v-for="academic in academicExperience" :key="academic.id" class="experienceItem">
+        <div v-for="academic in profileStore.academicExperience" :key="academic.id" class="experienceItem">
           <div class="experienceContent">
-            <h3>{{ academic.degree }} in {{ academic.field }}</h3>
+            <h3>{{ academic.title }}</h3>
             <p>{{ academic.institution }}</p>
-            <p>{{ academic.year }}</p>
+            <p>{{ academic.start_date }} -> {{ academic?.end_date }}</p>
           </div>
           <div class="experienceActions">
-            <button class="actionButton editButton">
+            <button class="actionButton editButton" @click="openModal('academic', academic)">
               <font-awesome-icon icon="fa-solid fa-edit" />
             </button>
             <div class="deleteButtonWrapper">
-              <button @click="confirmDelete('academic', academic.id)" class="actionButton deleteButton">
-                <font-awesome-icon icon="fa-solid fa-trash" />
+              <button data-bs-toggle="dropdown" class="actionButton deleteButton">
+                <font-awesome-icon class="trashCan" icon="fa-solid fa-trash-can" />
               </button>
-              <div v-if="deleteConfirmId === academic.id && deleteConfirmType === 'academic'" class="deleteConfirm">
-                <button @click="deleteExperience" class="confirmDelete">Delete</button>
-                <button @click="cancelDelete" class="cancelDelete">Cancel</button>
+              <div class="dropdown">
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" @click="profileStore.deleteAcademicBackground(academic.id)">Apagar</a>
+                  </li>
+                  <li><a class="dropdown-item">Cancelar</a></li>
+                </ul>
               </div>
             </div>
           </div>
@@ -85,28 +156,31 @@ const addExperience = (type) => {
 
       <div class="experienceSection">
         <div class="sectionHeader">
-          <h2 class="sectionTitle">Professional Experience</h2>
-          <button @click="addExperience('professional')" class="addButton">
-            <font-awesome-icon icon="fa-solid fa-plus" /> Add
+          <h2 class="sectionTitle">Experiência Profissional</h2>
+          <button @click="openModal('professional')" class="addButton">
+            <font-awesome-icon icon="fa-solid fa-plus" /> Adicionar
           </button>
         </div>
-        <div v-for="professional in professionalExperience" :key="professional.id" class="experienceItem">
+        <div v-for="professional in profileStore.professionalExperience" :key="professional.id" class="experienceItem">
           <div class="experienceContent">
-            <h3>{{ professional.position }}</h3>
+            <h3>{{ professional.title }}</h3>
             <p>{{ professional.company }}</p>
-            <p>{{ professional.period }}</p>
+            <p>{{ professional.start_date }} -> {{ professional?.end_date }}</p>
           </div>
           <div class="experienceActions">
-            <button class="actionButton editButton">
+            <button class="actionButton editButton" @click="openModal('professional', professional)">
               <font-awesome-icon icon="fa-solid fa-edit" />
             </button>
             <div class="deleteButtonWrapper">
-              <button @click="confirmDelete('professional', professional.id)" class="actionButton deleteButton">
-                <font-awesome-icon icon="fa-solid fa-trash" />
+              <button data-bs-toggle="dropdown" class="actionButton deleteButton">
+                <font-awesome-icon class="trashCan" icon="fa-solid fa-trash-can" />
               </button>
-              <div v-if="deleteConfirmId === professional.id && deleteConfirmType === 'professional'" class="deleteConfirm">
-                <button @click="deleteExperience" class="confirmDelete">Delete</button>
-                <button @click="cancelDelete" class="cancelDelete">Cancel</button>
+              <div class="dropdown">
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item"
+                      @click="profileStore.deleteProfessionalExperience(professional.id)">Apagar</a></li>
+                  <li><a class="dropdown-item">Cancelar</a></li>
+                </ul>
               </div>
             </div>
           </div>
@@ -305,7 +379,8 @@ const addExperience = (type) => {
   z-index: 10;
 }
 
-.confirmDelete, .cancelDelete {
+.confirmDelete,
+.cancelDelete {
   padding: 3px 8px;
   border: none;
   border-radius: 3px;
