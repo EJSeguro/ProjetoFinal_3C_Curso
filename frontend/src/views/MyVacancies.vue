@@ -60,7 +60,7 @@ watch(
   </div>
 
     <div v-if="!authStore.isRecruiter" class="vacanciesContainer">
-      <CandidateVacancieCard v-for="vacancy in vacancies" :key="vacancy.id" :vacancy="vacancy" />
+      <CandidateApplicationCard v-for="vacancy in vacancies" :key="vacancy.id" :vacancy="vacancy" />
     </div>
 
     <div v-else class="vacanciesContainer">
