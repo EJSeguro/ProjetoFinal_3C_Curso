@@ -18,6 +18,7 @@ class Vacancy extends Model
         'location',
         'active',
         'user_id',
+        'company',
     ];
 
     public function user()

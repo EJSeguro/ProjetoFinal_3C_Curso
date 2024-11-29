@@ -2,6 +2,9 @@
 import { ref, defineProps, computed } from 'vue';
 import { storeVacancy, updateVacancy, uploadImage } from '@/services/HttpService';
 import { Modal } from 'bootstrap';
+import { useVacancyStore } from '@/stores/vacancyStore';
+
+const vacancyStore = useVacancyStore();
 
 const props = defineProps({
     initialTitle: "",
@@ -10,9 +13,9 @@ const props = defineProps({
     initialField: "",
     initialLocation: "",
     initialActive: "",
+    initialCompany: "",
     isEdit: false,
     id: null,
-    addVacancy: null,
     updateVacancy: null,
 });
 
@@ -20,6 +23,7 @@ const title = ref(props.initialTitle);
 const description = ref(props.initialDescription);
 const category = ref(props.initialCategory);
 const field = ref(props.initialField);
+const company = ref(props.initialCompany);
 const location = ref(props.initialLocation);
 const active = ref(props.initialActive);
 const modalId = computed(() => (props.id ? `modalEdit-${props.id}` : "newVacancyModal"));
@@ -32,6 +36,7 @@ const resetForm = () => {
         description.value = "";
         category.value = "";
         field.value = "";
+        company.value = "";
         location.value = "";
         active.value = false;
     }
@@ -54,6 +59,7 @@ const storeUpdateVacancy = async () => {
         field: field.value,
         location: location.value,
         active: active.value,
+        company: company.value,
     };
 
     if (props.isEdit) {
@@ -77,7 +83,7 @@ const storeUpdateVacancy = async () => {
                 response.data.vacancy.image = await uploadVacancyImage(response.data.vacancy.id);
             }
 
-            props.addVacancy(response.data.vacancy);
+            vacancyStore.addVacancy(response.data.vacancy);
             closeModal();
         }
     }
@@ -128,6 +134,10 @@ const uploadVacancyImage = async (vacancyId) => {
                             <textarea class="form-control" v-model="description" rows="3"
                                 placeholder="Descrição da Vaga"></textarea>
                         </div>
+                        <div class="mb-3"> 
+                            <label for="company" class="form-label">Empresa</label>
+                            <input type="text" class="form-control" v-model="company" placeholder="Empresa" />
+                        </div>
                         <div class="mb-3">
                             <label for="category" class="form-label">Categoria da Vaga</label>
                             <select class="form-select" v-model="category"
@@ -150,7 +160,7 @@ const uploadVacancyImage = async (vacancyId) => {
                             <input type="text" class="form-control" v-model="location" placeholder="Local da Vaga" />
                         </div>
                         <div class="form-check mb-3">
-                            <input type="checkbox" class="form-check-input" v-model="active" />
+                            <input type="checkbox" checkedclass="form-check-input" v-model="active" />
                             <label class="form-check-label">Ativo</label>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Salvar Vaga</button>

@@ -4,67 +4,53 @@ import CreateEditVacancyModal from '@/components/CreateEditVacancyModal.vue';
 import CandidateVacancieCard from '@/components/CandidateVacancieCard.vue';
 import { useAuthStore } from '@/stores/authStore';
 import { onMounted, ref, watch } from 'vue';
-import { getCandidateApplications, getRecruiterVacancies } from '@/services/HttpService';
+import { getRecruiterVacancies } from '@/services/HttpService';
+import { useApplicationStore } from '@/stores/applicationStore';
+import { useVacancyStore } from '@/stores/vacancyStore';
 
 const authStore = useAuthStore();
-const vacancies = ref([]);
+const applicationStore = useApplicationStore();
+const vacancyStore = useVacancyStore();
 
-function deleteVacancy(id) {
-  vacancies.value = vacancies.value.filter(vacancy => vacancy.id !== id);
-}
-
-async function getVacancies() {
-  vacancies.value = [];
-
+async function getVacanciesAndApplications() {
   if (authStore.isRecruiter) {
-    const response = await getRecruiterVacancies();
-    if (response.status === 200) {
-      vacancies.value = response.data;
-    }
+   vacancyStore.getVacancies();
   }
   else {
-    const response = await getCandidateApplications();
-    if (response.status === 200) {
-      vacancies.value = response.data;
-    }
+    applicationStore.getApplications();
   }
-}
-
-function addVacancy(vacancy) {
-  vacancies.value.push(vacancy);
 }
 
 onMounted(() => {
-  getVacancies();
+  getVacanciesAndApplications();
 });
 
 watch(
     () => authStore.user.role,
     (newRole) => {
         if (newRole) {
-          getVacancies();
+          getVacanciesAndApplications();
         }
     }
 );
-
 </script>
 
 <template>
   <main class="mainContainer">
     <div class="title">
     <div class="vacanciesTitle">
-      <h1 v-if="!authStore.isRecruiter">Minhas Vagas</h1>
       <h1 v-if="authStore.isRecruiter" class="vacanciesTitle">Gerenciar Vagas</h1>
+      <h1 v-else>Minhas Vagas</h1>
     </div>
-    <CreateEditVacancyModal v-if="authStore.isRecruiter" :addVacancy="addVacancy" />
+    <CreateEditVacancyModal v-if="authStore.isRecruiter" :initialActive="true"/>
   </div>
 
     <div v-if="!authStore.isRecruiter" class="vacanciesContainer">
-      <CandidateApplicationCard v-for="vacancy in vacancies" :key="vacancy.id" :vacancy="vacancy" />
+      <CandidateVacancieCard v-for="application in applicationStore.applications" :key="application.id" :vacancy="application.vacancy" :application="application" />
     </div>
 
     <div v-else class="vacanciesContainer">
-      <RecruiterVacancieCard v-for="vacancy in vacancies" :key="vacancy.id" :vacancy="vacancy" :deleteVacancy="deleteVacancy" />
+      <RecruiterVacancieCard v-for="vacancy in vacancyStore.vacancies" :key="vacancy.id" :vacancy="vacancy" />
     </div>
   </main>
 </template>
@@ -79,7 +65,6 @@ watch(
   width: 100%;
   min-height: 100vh;
 }
-
 
 .vacanciesContainer {
 display: flex;

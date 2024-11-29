@@ -31,6 +31,7 @@ class VacancyController extends Controller
             'field' => 'required|string',
             'location' => 'required|string',
             'active' => 'required|boolean',
+            'company' => 'required|string',
         ]);
 
         $validated['user_id']= Auth::user()->id;
@@ -57,6 +58,7 @@ class VacancyController extends Controller
             'field'=> 'sometimes|string',
             'location'=> 'sometimes|string',
             'active'=> 'sometimes|boolean',
+            'company'=> 'sometimes|string',
         ]);
 
         $vacancy->update($validated);

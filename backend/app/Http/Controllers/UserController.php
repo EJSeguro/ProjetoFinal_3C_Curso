@@ -20,6 +20,7 @@ class UserController extends Controller
         $valdiated = $request->validate([
             'about' => 'sometimes|string',
             'curriculum'=>'sometimes|string',
+            'title' => 'sometimes|string',
         ]);
 
         $user=Auth::user();

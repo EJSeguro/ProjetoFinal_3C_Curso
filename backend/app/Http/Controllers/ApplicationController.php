@@ -28,7 +28,7 @@ class ApplicationController extends Controller
 
     public function getCandidateApplications()
     {
-        $applications = Application::where('user_id', Auth::user()->id)->get();
+        $applications = Application::where('user_id', Auth::user()->id)->with('vacancy')->get();
 
         return response()->json($applications);
     }
@@ -41,6 +41,12 @@ class ApplicationController extends Controller
 
         $validate['user_id'] = Auth::user()->id;
 
+        $application = Application::where('vacancy_id', $validate['vacancy_id'])->where('user_id', $validate['user_id'])->first();
+
+        if($application) {
+            return response()->json(['message' => 'Application already exists'], 400);
+        }
+
         $application = Application::create($validate);
 
         return response()->json($application, 200);
@@ -48,7 +54,7 @@ class ApplicationController extends Controller
 
     public function destroy(int $id)
     {
-        $application = Application::where('user_id', Auth::user()->id)->firstOrFail($id);
+        $application = Application::where('user_id', Auth::user()->id)->where('id', $id)->firstOrFail();
         $application->delete();
         return response()->json($application, 200);
     }
