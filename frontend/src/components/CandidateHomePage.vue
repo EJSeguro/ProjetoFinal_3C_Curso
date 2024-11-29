@@ -30,7 +30,9 @@ const vacancySelected = ref(null);
                                 <h2>{{ vacancySelected.title }}</h2>
                                 <h5>{{ vacancySelected.field }} | {{ vacancySelected.category }}</h5>
                                 <h5>{{ vacancySelected.location }}</h5>
+                                <div class="description">
                                 <p>{{ vacancySelected.description }}</p>
+                            </div>
                             </div>
                         </div>
                         <div class="applicationButton">
@@ -78,6 +80,10 @@ main {
     box-shadow: inset 0 10px 12px rgba(0, 0, 0, 0.1);
 }
 
+.description{
+    overflow: auto;
+}
+
 .vacanciesDescription {
     display: flex;
     justify-content: center;
@@ -111,12 +117,10 @@ main {
 }
 
 .vacanciesApplication {
-    scroll-behavior: auto;
     max-height: 100vh;
     width: 100%;
     background-color: white;
-    overflow: auto;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -145,12 +149,15 @@ main {
     flex-direction: column;
     height: 85%;
     width: 100%;
+    overflow-x: hidden
 }
 
 .vacanciesInfos {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     width: 100%;
+    height: 100%;
     padding: 6%;
 }
 

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('title');
-            $table->string('description');
+            $table->text('description');
             $table->string('field');
             $table->enum('category', [Vacancy::PRESENCIAL_CATEGORY, Vacancy::HOMEOFFICE_CATEGORY, Vacancy::HYBRID_CATEGORY]);
             $table->string('location');
