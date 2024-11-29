@@ -6,6 +6,9 @@ const props = defineProps({
     vacancy: {
         type: Object,
     },
+    application: {
+        type: Object,
+    }
 });
 
 const imageUrl = ref(null);

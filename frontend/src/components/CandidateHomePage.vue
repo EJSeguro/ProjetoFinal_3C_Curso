@@ -1,24 +1,13 @@
 <script setup>
-import { onMounted, ref } from 'vue';
-import { getVacancies } from '@/services/HttpService';
+import { ref } from 'vue';
 import CandidateVacancieCard from './CandidateVacancieCard.vue';
+import { useVacancyStore } from '@/stores/vacancyStore';
+import { useApplicationStore } from '@/stores/applicationStore';
 
+const vacancyStore = useVacancyStore();
+const applicationStore = useApplicationStore();
 
-const vacancies = ref([]);
-
-
-async function pageInfos() {
-    vacancies.value = [];
-
-    const response = await getVacancies();
-    if (response.status === 200) {
-        vacancies.value = response.data;
-    }
-}
-
-onMounted(() => {
-    pageInfos();
-});
+const vacancySelected = ref(null);
 
 </script>
 
@@ -37,9 +26,25 @@ onMounted(() => {
                 </div>
                 <div class="vacanciesDescription">
                     <div class="vacancies">
-                        <CandidateVacancieCard v-for="vacancy in vacancies" :key="vacancy.id" :vacancy="vacancy" />
+                        <CandidateVacancieCard v-for="vacancy in vacancyStore.vacancies" :key="vacancy.id"
+                            :vacancy="vacancy" @click="vacancySelected = vacancy" />
                     </div>
-                    <div class="vacanciesApplication">
+                   
+                    <div class="vacanciesApplication" v-if="vacancySelected">
+                        <div class="vacanciesInfos vacanciesInfosSelected">
+                            <div class="infos">
+                                <h2>{{ vacancySelected.title }}</h2>
+                                <h5>{{ vacancySelected.field }} | {{ vacancySelected.category }}</h5>
+                                <h5>{{ vacancySelected.location }}</h5>
+                                <p>{{ vacancySelected.description }}</p>
+                            </div>
+                        </div>
+                        <div class="applicationButton">
+                            <button @click="applicationStore.applicate(vacancySelected.id)">Candidatar-se</button>
+                        </div>
+                    </div>
+                   
+                    <div class="vacanciesApplication" v-else>
                         <div class="vacanciesInfos">
                             <div class="infos">
                                 <h2>Título da Vaga</h2>
@@ -47,9 +52,6 @@ onMounted(() => {
                                 <h5>Localidade</h5>
                                 <p>Descrição</p>
                             </div>
-                        </div>
-                        <div class="applicationButton">
-                            <button>Candidatar-se</button>
                         </div>
                     </div>
                 </div>
@@ -174,9 +176,12 @@ main {
 .vacanciesInfos {
     display: flex;
     flex-direction: column;
-    height: 88%;
     width: 100%;
-    box-shadow: inset 0 -4px 6px rgba(0, 0, 0, 0.2);
     padding: 6%;
+}
+
+.vacanciesInfosSelected {
+    height: 88%;
+    box-shadow: inset 0 -4px 6px rgba(0, 0, 0, 0.2);
 }
 </style>

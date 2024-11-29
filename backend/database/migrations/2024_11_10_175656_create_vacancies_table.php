@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('location');
             $table->string('image')->nullable();
             $table->boolean('active');
+            $table->string('company');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
         });
     }

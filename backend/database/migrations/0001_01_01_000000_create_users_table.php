@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', [User::CANDIDATE_ROLE, User::RECRUITER_ROLE])->default(User::CANDIDATE_ROLE);
             $table->string('about')->nullable();
+            $table->string('title')->nullable();
             $table->string('curriculum')->nullable();
             $table->rememberToken();
             $table->timestamps();

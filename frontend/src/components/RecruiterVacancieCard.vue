@@ -2,16 +2,15 @@
 import { onMounted, ref } from "vue";
 import CreateEditVacancyModal from "./CreateEditVacancyModal.vue";
 import { deleteVacancy, getImage } from "@/services/HttpService"; 
+import { useVacancyStore } from "@/stores/vacancyStore";
 
 const props = defineProps({
   vacancy: {
     type: Object,
   },
-  deleteVacancy: {
-    type: Function,
-    required: true,
-  },
 });
+
+const vacancyStore = useVacancyStore();
 
 const imageUrl = ref(null);
 
@@ -39,7 +38,7 @@ async function deleteVacancyRecruiter() {
   const response = await deleteVacancy(localVacancy.value.id);
 
   if (response.status === 200) {
-    props.deleteVacancy(localVacancy.value.id);
+    vacancyStore.deleteVacancy(localVacancy.value.id);
   }
 }
 </script>
@@ -57,7 +56,7 @@ async function deleteVacancyRecruiter() {
       <p>{{ localVacancy.location }}</p>
       <div>
         <CreateEditVacancyModal :initialTitle="props.vacancy.title" :initialDescription="props.vacancy.description"
-          :initialCategory="props.vacancy.category" :initialField="props.vacancy.field"
+          :initialCategory="props.vacancy.category" :initialField="props.vacancy.field", :initialCompany="props.vacancy.company"
           :initialLocation="props.vacancy.location" :initialActive="props.vacancy.active" :id="props.vacancy.id"
           :updateVacancy="updateVacancy" isEdit="true" />
 
