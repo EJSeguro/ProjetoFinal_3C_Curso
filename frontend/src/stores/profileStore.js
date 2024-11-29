@@ -12,11 +12,14 @@ import {
 } from '@/services/HttpService';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import { useToast } from 'vue-toastification';
+
 
 export const useProfileStore = defineStore('profileStore', () => {
   const profile = ref({});
   const academicExperience = ref([]);
   const professionalExperience = ref([]);
+  const toast = useToast();
 
   const updateProfile = async (profile) => {
     const response = await updateProfileApi(profile);
@@ -36,6 +39,9 @@ export const useProfileStore = defineStore('profileStore', () => {
     const response = await storeAcademicBackground(experience);
     if (response.status === 201) {
       academicExperience.value.push(response.data);
+      toast.success('Experiência cadastrada com sucesso!',  {
+        timeout: 2000
+      });
     }
   }
 
@@ -64,6 +70,9 @@ export const useProfileStore = defineStore('profileStore', () => {
     const response = await storeExperience(experience);
     if (response.status === 201) {
       professionalExperience.value.push(response.data);
+      toast.success('Experiência cadastrada com sucesso!',  {
+        timeout: 2000
+      });
     }
   }
 
