@@ -2,6 +2,7 @@ import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import { changeRole, login, logout, register } from "@/services/HttpService";
 import { useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
 
 export const useAuthStore = defineStore(
   "auth",
@@ -12,6 +13,8 @@ export const useAuthStore = defineStore(
     const user = ref({});
     const isAuthenticated = computed(() => token.value !== "");
     const isRecruiter = computed(() => user.value.role === "recruiter");
+
+    const toast = useToast();
 
     async function userLogout() {
       await logout();
@@ -25,7 +28,9 @@ export const useAuthStore = defineStore(
         const response = await login(data);
 
         if (response.status === 200) {
-          alert("Usuário logado com sucesso!");
+          toast.success("Usuário logado com sucesso!", {
+            timeout: 2000
+          });
           token.value = response.data.token;
           user.value = response.data.user;
 
