@@ -37,8 +37,9 @@ export const useAuthStore = defineStore(
           router.push("/Dashboard");
         }
       } catch (error) {
-        console.error("Erro ao tentar logar:", error);
-        alert("Erro ao logar usuário!");
+        toast.error("Erro ao logar usuário!", {
+          timeout: 2000
+        });
       }
     }
 
@@ -47,15 +48,18 @@ export const useAuthStore = defineStore(
         const response = await register(data);
 
         if (response.status === 201) {
-          alert("Usuário cadastrado com sucesso!");
+          toast.success("Usuário cadastrado com sucesso!", {
+            timeout: 2000
+          });
           token.value = response.data.token;
           user.value = response.data.user;
 
           router.push("/Dashboard");
         }
       } catch (error) {
-        console.error("Erro ao tentar cadastrar:", error);
-        alert("Erro ao cadastrar usuário!");
+        toast.error("Erro ao cadastrar usuário!", {
+          timeout: 2000
+        });
       }
     }
 

@@ -1,7 +1,9 @@
 import { deleteApplication, getCandidateApplications, storeApplication } from '@/services/HttpService';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import { useToast } from 'vue-toastification';
 
+const toast = useToast();
 export const useApplicationStore = defineStore('applicationStore', () => {
   const applications = ref([]);
 
@@ -9,10 +11,14 @@ export const useApplicationStore = defineStore('applicationStore', () => {
     try {
       const response = await storeApplication({ vacancy_id: id });
       if (response.status === 200) {
-        alert('Você se candidatou com sucesso!');
+        toast.success('Você se candidatou com sucesso!',  {
+          timeout: 2000
+        });
       }
     } catch (error) {
-      alert('Erro ao aplicar!');
+      toast.error('Erro ao aplicar!',  {
+        timeout: 2000
+      });
     }
   }
 
@@ -21,7 +27,9 @@ export const useApplicationStore = defineStore('applicationStore', () => {
 
     if (response.status === 200) {
       applications.value = applications.value.filter(app => app.id !== id);
-      alert('Você se descandidatou com sucesso!');
+      toast.success('Você se descandidatou com sucesso!',  {
+        timeout: 2000
+      });
     }
   }
 

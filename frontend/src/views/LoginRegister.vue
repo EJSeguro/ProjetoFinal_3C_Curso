@@ -37,7 +37,6 @@ async function registrateUser() {
     <section class="left-section fontes-esquerda">
       <h1>Bem vindo ao Pointer!</h1>
       <h3>O sistema que aponta ao seu futuro</h3>
-      <button>Saiba mais</button>
     </section>
     <section class="right-section">
       <img src="../../public/favicon.ico" />
@@ -50,9 +49,6 @@ async function registrateUser() {
         <input class="inputLogin" type="email" placeholder="Email" v-model="loginUser.email" />
         <input class="inputLogin" type="password" placeholder="Senha" v-model="loginUser.password" />
         <button class="buttonLogin" type="submit">Login</button>
-        <div class="opcoes">
-          <button>Esqueceu a Senha?</button>
-        </div>
       </form>
 
       <form v-else @submit.prevent="registrateUser">
