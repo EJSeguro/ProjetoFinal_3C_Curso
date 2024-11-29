@@ -1,7 +1,6 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { getImage } from "@/services/HttpService";
-import CandidateVacancieOffcanvas from "./CandidateVacancieOffcanvas.vue";
 
 const props = defineProps({
     vacancy: {
@@ -30,11 +29,14 @@ onMounted(async () => {
         <img v-else src="../assets/vacancy.webp" />
         <div class="cardInfos">
             <h3>{{ props.vacancy.title }}</h3>
-            <p v-if="props.vacancy.category === 'presencial'">Presencial</p>
-            <p v-if="props.vacancy.category === 'homeoffice'">Home Office</p>
-            <p v-if="props.vacancy.category === 'hybrid'">Híbrido</p>
-            <p>{{ props.vacancy.field }} | {{ props.vacancy.location }}</p>
-            
+            <p>{{ props.vacancy.location }}</p>
+            <p>
+                {{ props.vacancy.field }} |
+                <span v-if="props.vacancy.category === 'presencial'">Presencial</span>
+                <span v-else-if="props.vacancy.category === 'homeoffice'">Home Office</span>
+                <span v-else-if="props.vacancy.category === 'hybrid'">Híbrido</span>
+            </p>
+
         </div>
         <button><font-awesome-icon class="arrowIcon" icon="fa-solid fa-chevron-right" /></button>
     </div>
@@ -44,27 +46,33 @@ onMounted(async () => {
 .card {
     padding: 10px;
     background-color: #fff;
-    height: 120px;
-    width: 450px;
+    min-height: 200px;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: row;
     gap: 30px;
+    overflow: hidden;
+    --bs-card-border-radius: unset;
 }
 
 .cardInfos {
     display: flex;
     flex-direction: column;
+    height: 100px;
     width: 100%;
+    padding: 2%;
 }
 
-.cardInfos p{
+.cardInfos p {
     font-size: 15px;
+    margin: 0;
 }
 
-.cardInfos h3{
+.cardInfos h3 {
     font-size: 20px;
+    margin: 0;
 }
 
 button {
@@ -80,7 +88,7 @@ button {
 
 .card img {
     height: 100%;
-    min-width: 120px;
-    max-width: 120px;
+    min-width: 150px;
+    max-width: 150px;
 }
 </style>

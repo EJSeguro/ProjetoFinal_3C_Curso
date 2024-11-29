@@ -1,5 +1,5 @@
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faSearch, faPhone, faMagnifyingGlass, faClipboard, faHouse, faUser, faCloudArrowUp, faPlus, faSquareCaretDown, faCircleChevronDown, faUserPen, faArrowDown, faTrashCan, faChevronRight} from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faPhone, faMagnifyingGlass, faClipboard, faHouse, faUser, faCloudArrowUp, faPlus, faSquareCaretDown, faCircleChevronDown, faUserPen, faArrowDown, faTrashCan, faChevronRight, faFilter} from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -18,7 +18,8 @@ library.add(
     faSearch,
     faArrowDown,
     faTrashCan,
-    faChevronRight,   
+    faChevronRight,
+    faFilter,   
 );
 
 import "./assets/main.css";

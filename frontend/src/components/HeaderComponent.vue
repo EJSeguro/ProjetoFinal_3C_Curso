@@ -76,6 +76,7 @@ async function changeRole() {
 </template>
 
 <style scoped>
+
 .noUnderline {
   text-decoration: none;
   color: inherit;
