@@ -24,8 +24,8 @@ class ExperienceController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string',
-            'description' => 'sometimes|string',
-            'institution' => 'required|string',
+            'description' => 'nullable|string',
+            'company' => 'required|string',
             'start_date' => 'required|date',
             'end_date' => 'sometimes|date',
         ]);
@@ -49,8 +49,8 @@ class ExperienceController extends Controller
     {
         $validated = $request->validate([
             'title' => 'sometimes|string',
-            'description' => 'sometimes|string',
-            'institution' => 'sometimes|string',
+            'description' => 'nullable|string',
+            'company' => 'sometimes|string',
             'start_date' => 'sometimes|date',
             'end_date' => 'sometimes|date',
         ]);

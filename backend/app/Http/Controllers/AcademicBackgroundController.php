@@ -19,7 +19,7 @@ class AcademicBackgroundController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string',
-            'description' => 'sometimes|string',
+            'description' => 'nullable|string',
             'institution' => 'required|string',
             'start_date' => 'required|date',
             'end_date' => 'sometimes|date',
@@ -41,7 +41,7 @@ class AcademicBackgroundController extends Controller
     {
         $validated = $request->validate([
             'title' => 'sometimes|string',
-            'description' => 'sometimes|string',
+            'description' => 'nullable|string',
             'institution' => 'sometimes|string',
             'start_date' => 'sometimes|date',
             'end_date' => 'sometimes|date',
